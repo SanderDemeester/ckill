@@ -54,6 +54,22 @@ struct tcp_options{
   int fin; //fin
 };
 
+typedef struct{
+  ip_header*iph;
+  tcp_header*tcph;
+  unsigned char*data;
+}queue_element;
+
+typedef struct{
+  int number_of_elements;
+  queue_element *list;
+}queue;
+
+typedef struct{
+  queue *q;
+}thread_arguments;
+
 //funcion definitions
 //process incoming packets
 void *process_incoming_packets(void*ptr);
+void *process_queue(void*ptr);
