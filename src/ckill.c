@@ -1,5 +1,12 @@
 #include "header/ckill.h"
 
+//GLOBAL VAR (ja felix, ik weet het, ik weet het)
+int working_on_q = 0;
+void *process_queue(void*ptr){
+  while(1){
+    sleep(10);
+  }
+}
 void *process_incoming_packets(void*ptr){
   queue_element *element_to_add = NULL;
   int listen_socket = socket(AF_INET,SOCK_RAW, IPPROTO_TCP);
@@ -58,7 +65,10 @@ int main(void){
   flow *connections = (flow*) calloc(1,sizeof(flow));
        
   pthread_t *engine  = (pthread_t*) malloc(sizeof(pthread_t));
+  pthread_t *t  = (pthread_t*) malloc(sizeof(pthread_t));
   pthread_create(engine,NULL,process_incoming_packets,NULL);
+  pthread_create(t,NULL,process_queue,NULL);
+  pthread_join(*t,NULL);
   pthread_join(*engine,NULL);
   return 0;
 }
