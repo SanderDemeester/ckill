@@ -13,8 +13,8 @@ ckill: $(obj)
 obj/%.o: src/*.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 clean:
-	if [ -f "AD3zip" ]; then \
-	rm AD3zip; \
+	if [ -f "ckill" ]; then \
+	rm ckill; \
 	fi; done
 	@for file in $(obj); do \
 	if [ -f $$file ]; then \
