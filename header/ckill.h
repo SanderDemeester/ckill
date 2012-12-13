@@ -69,6 +69,13 @@ typedef struct{
   queue *q;
 }thread_arguments;
 
+ typedef struct{
+   pthread_cond_t*conditie;
+   pthread_mutex_t*context;
+   queue*q;
+   int error;
+ }pthread_context;
+
 //funcion definitions
 //process incoming packets
 void *process_incoming_packets(void*ptr);
