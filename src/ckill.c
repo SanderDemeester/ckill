@@ -62,7 +62,13 @@ int main(void){
     exit(-1);
   }
 
-  flow *connections = (flow*) calloc(1,sizeof(flow));
+  volatile pthread_context*pcontext;
+  pcontext->conditie = (pthread_cond_t*) malloc(sizeof(pthread_cond_t));
+  pcontext->mutex    = (pthread_mutex_t*)   malloc(sizeof(pthread_mutex_t));
+  pcontext->error    = 0;
+
+  flow *connections  = (flow*) calloc(1,sizeof(flow));
+  
        
   pthread_t *engine  = (pthread_t*) malloc(sizeof(pthread_t));
   pthread_t *t  = (pthread_t*) malloc(sizeof(pthread_t));

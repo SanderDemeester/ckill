@@ -65,13 +65,9 @@ typedef struct{
   queue_element *list;
 }queue;
 
-typedef struct{
-  queue *q;
-}thread_arguments;
-
  typedef struct{
    pthread_cond_t*conditie;
-   pthread_mutex_t*context;
+   pthread_mutex_t*mutex;
    queue*q;
    int error;
  }pthread_context;
