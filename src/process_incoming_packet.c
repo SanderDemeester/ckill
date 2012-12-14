@@ -3,6 +3,7 @@
 #endif
 
 void *process_incoming_packets(void*ptr){
+  volatile pthread_context*pcontext = (pthread_context*)ptr;
   queue_element *element_to_add = NULL;
   int listen_socket = socket(AF_INET,SOCK_RAW, IPPROTO_TCP);
   unsigned char buffer[500];
@@ -17,6 +18,7 @@ void *process_incoming_packets(void*ptr){
   bind(listen_socket,(struct sockaddr*)me,sizeof(*me));
   while(1){
     int size = recv(listen_socket,buffer,500,0);
+    pthread_mutex_lock(pcontext->mutex); //take mutex
     if(size == -1)
       exit(-1);
     ip_header *iph = (ip_header*)buffer;
@@ -25,6 +27,8 @@ void *process_incoming_packets(void*ptr){
     element_to_add = (queue_element*) malloc(sizeof(queue_element));
     element_to_add->iph = iph;
     element_to_add->tcph = tcph;
+    
+    
     
   
     if(iph->proto == 6){

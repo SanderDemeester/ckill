@@ -31,5 +31,16 @@ int main(void){
 
   pthread_join(*process_queue_engine,NULL);
   pthread_join(*process_packet_engine,NULL);
+
+  pthread_mutex_destroy(pcontext->mutex);
+  pthread_cond_destroy(pcontext->conditie);
+
+  free(process_packet_engine);
+  free(process_queue_engine);
+
+  free(pcontext->conditie);
+  free(pcontext->mutex);
+  
+  
   return 0;
 }
