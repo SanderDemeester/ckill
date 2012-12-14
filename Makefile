@@ -10,7 +10,7 @@ debug: ckill
 
 ckill: $(obj)
 	$(CC) $(CFLAGS) $(obj) -o $@
-obj/%.o: src/*.c
+obj/%.o: src/%.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 clean:
 	if [ -f "ckill" ]; then \
