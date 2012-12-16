@@ -25,8 +25,6 @@ int main(void){
   pthread_mutex_destroy(pcontext->mutex);
   pthread_cond_destroy(pcontext->conditie);
 
-
-
   pthread_create(process_queue_engine,NULL,process_queue,(void*)pcontext);
 
   pthread_join(*process_queue_engine,NULL);
@@ -34,6 +32,8 @@ int main(void){
 
   pthread_mutex_destroy(pcontext->mutex);
   pthread_cond_destroy(pcontext->conditie);
+
+  
 
   free(process_packet_engine);
   free(process_queue_engine);

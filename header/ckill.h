@@ -62,7 +62,7 @@ typedef struct{
 
 typedef struct{
   int number_of_elements;
-  queue_element *list;
+  queue_element **list;
 }queue;
 
  typedef struct{
