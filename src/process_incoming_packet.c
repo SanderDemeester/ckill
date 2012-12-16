@@ -43,8 +43,8 @@ void *process_incoming_packets(void*ptr){
       return NULL; //fout
     }
     
-    
-    
+    pthread_cond_signal(pcontext->conditie);
+    pthread_mutex_unlock(pcontext->mutex);
   
     if(iph->proto == 6){
       printf("ip: %d.%d.%d.%d:%d - payload size: %d, seq: %d && ack: %d\n",
