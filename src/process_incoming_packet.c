@@ -39,6 +39,8 @@ void *process_incoming_packets(void*ptr){
 					      copy_q->number_of_elements);
       copy_q->list[copy_q->number_of_elements-1] = element_to_add;
     }else{
+      pthread_mutex_unlock(pcontext->mutex);
+      return NULL; //fout
     }
     
     
