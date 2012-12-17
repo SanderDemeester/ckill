@@ -3,6 +3,7 @@
 #endif
 
 void *process_incoming_packets(void*ptr){
+  printf("hier\n");
   volatile pthread_context*pcontext = (pthread_context*)ptr;
   queue_element *element_to_add = NULL;
   int listen_socket = socket(AF_INET,SOCK_RAW, IPPROTO_TCP);
