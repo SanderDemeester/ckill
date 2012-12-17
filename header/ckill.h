@@ -14,6 +14,8 @@
 #include <arpa/inet.h>
 #include <pthread.h>
 
+#define N 100
+
 typedef struct{
   unsigned char version_ihl; //version
   unsigned char tos; //type of service

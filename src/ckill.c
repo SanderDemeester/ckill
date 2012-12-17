@@ -1,7 +1,7 @@
 #include "header/ckill.h"
 #include "header/process_queue.h"
 #include "header/process_incoming_packet.h"
-#define N 100
+
 int main(void){
 
   if(getuid()){
