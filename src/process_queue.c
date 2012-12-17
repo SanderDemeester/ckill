@@ -20,25 +20,26 @@ void *process_queue(void*ptr){
 	
 	if(iph->proto == 6){
 	  //match tcp payload
-	  printf("ip: %d.%d.%d.%d:%d - payload size: %d, seq: %d && ack: %d\n",
+	  printf("ip: %d.%d.%d.%d:%d - seq: %d && ack: %d\n",
 		 ((iph->src_adr)       & 0x000000FF),
 		 ((iph->src_adr >> 8)  & 0x000000FF),
 		 ((iph->src_adr >> 16) & 0x000000FF),
 		 ((iph->src_adr >> 24) & 0x000000FF),
 		 htons(tcph->src_port),
-		 size,
 		 htons(tcph->seq),
 		 htons(tcph->ack)
 		 );
 	  
-	  printf("ip: %d.%d.%d.%d:%d - payload size: %d\n", 
+	  printf("ip: %d.%d.%d.%d:%d\n", 
 		 ((iph->dst_adr)       & 0x000000FF),
 		 ((iph->dst_adr >> 8)  & 0x000000FF),
 		 ((iph->dst_adr >> 16) & 0x000000FF),
 		 ((iph->dst_adr >> 24) & 0x000000FF),
-		 htons(tcph->dst_port),
-		 size);
+		 htons(tcph->dst_port)
+		 );
 	}
+	free(element); //geef element terug vrij
+	q->number_of_elements--; //decrement aantal elementen.
       }
     }else{
       //er is geen werk
