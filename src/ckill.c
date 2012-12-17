@@ -10,16 +10,26 @@ int main(void){
   }
 
   volatile pthread_context pcontext;
-  pcontext.conditie = (pthread_cond_t*) malloc(sizeof(pthread_cond_t));
-  pcontext.mutex    = (pthread_mutex_t*)   malloc(sizeof(pthread_mutex_t));
-  pcontext.error    = 0;
-  flow *connections  = (flow*) calloc(1,sizeof(flow));
+  pcontext.conditie    = (pthread_cond_t*) malloc(sizeof(pthread_cond_t));
+  pcontext.mutex       = (pthread_mutex_t*)   malloc(sizeof(pthread_mutex_t));
+  pcontext.error       = 0;
+  pcontext.connections = (flow*) malloc(sizeof(flow));
+
+  queue*q = (queue*) malloc(sizeof(queue));
+  q->number_of_elements = 0;
+  q->list = (queue_element**) malloc(sizeof(queue_element*));
+  q->list[0] = (queue_element*) malloc(sizeof(queue_element));
+  
+  pcontext.q = (queue*) malloc(sizeof(queue));
+  pcontext.q = q;
   
        
   pthread_t *process_packet_engine  = (pthread_t*) malloc(sizeof(pthread_t));
   pthread_t *process_queue_engine  = (pthread_t*) malloc(sizeof(pthread_t));
 
   pthread_create(process_packet_engine,NULL,process_incoming_packets,(void*)&pcontext);
+  sleep(10000);
+  printf("hier1\n");
 
   pthread_mutex_destroy(pcontext.mutex);
   pthread_cond_destroy(pcontext.conditie);

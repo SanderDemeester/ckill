@@ -70,6 +70,7 @@ typedef struct{
    pthread_mutex_t*mutex;
    queue*q;
    int error;
+   flow*connections;
  }pthread_context;
 
 //funcion definitions

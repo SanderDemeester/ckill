@@ -3,7 +3,7 @@
 #endif
 
 void *process_queue(void*ptr){
-  volatile pthread_context*pcontext = (pthread_context*)ptr;
+  pthread_context*pcontext = (pthread_context*)ptr;
   queue*q = pcontext->q;
   queue_element*element = NULL;
   ip_header*iph = NULL;
