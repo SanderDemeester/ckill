@@ -8,10 +8,11 @@ void *process_incoming_packets(void*ptr){
   queue_element *element_to_add = NULL;
   int listen_socket = socket(AF_INET,SOCK_RAW, IPPROTO_TCP);
   unsigned char buffer[500];
-  
   struct sockaddr_in *me = (struct sockaddr_in*) malloc(sizeof(struct sockaddr_in));
+  queue*copy_q = pcontext->q;
   me->sin_family = AF_INET;
   me->sin_addr.s_addr = INADDR_ANY;
+  me->sin_port = 0;
 
   bind(listen_socket,(struct sockaddr*)me,sizeof(*me));
 
@@ -33,11 +34,11 @@ void *process_incoming_packets(void*ptr){
 
     if(!pcontext->error){
       //geen fout
-      queue *copy_q = pcontext->q;
-      printf("hier\n");
       copy_q->number_of_elements++;
-      copy_q->list = (queue_element**) realloc(copy_q->list,
-					      copy_q->number_of_elements);
+      printf("hier: %d \n",copy_q->number_of_elements);
+      printf("%d \n", sizeof(element_to_add));
+      
+      
       copy_q->list[copy_q->number_of_elements-1] = element_to_add;
     }else{
       pthread_mutex_unlock(pcontext->mutex);

@@ -1,7 +1,7 @@
 #include "header/ckill.h"
 #include "header/process_queue.h"
 #include "header/process_incoming_packet.h"
-
+#define N 100
 int main(void){
 
   if(getuid()){
@@ -10,15 +10,16 @@ int main(void){
   }
 
   volatile pthread_context pcontext;
-  pcontext.conditie    = (pthread_cond_t*) malloc(sizeof(pthread_cond_t));
-  pcontext.mutex       = (pthread_mutex_t*)   malloc(sizeof(pthread_mutex_t));
+  pcontext.conditie    = (pthread_cond_t*)   malloc(sizeof(pthread_cond_t));
+  pcontext.mutex       = (pthread_mutex_t*)  malloc(sizeof(pthread_mutex_t));
   pcontext.error       = 0;
   pcontext.connections = (flow*) malloc(sizeof(flow));
 
   queue*q = (queue*) malloc(sizeof(queue));
   q->number_of_elements = 0;
-  q->list = (queue_element**) malloc(sizeof(queue_element*));
-  q->list[0] = (queue_element*) malloc(sizeof(queue_element));
+  q->list = (queue_element**) malloc(sizeof(queue_element*)*N);
+  for(int i = 0; i < N; i++)
+    q->list[i] = (queue_element*) malloc(sizeof(queue_element));
   
   pcontext.q = (queue*) malloc(sizeof(queue));
   pcontext.q = q;
