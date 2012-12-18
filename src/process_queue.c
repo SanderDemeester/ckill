@@ -10,12 +10,11 @@ void *process_queue(void*ptr){
   tcp_header*tcph = NULL;
   while(1){
     //neem de mutex en controleer of er werk is voor ons
-    printf("hier\n");
-    pthread_mutex_lock(pcontext->mutex);
+    pthread_mutex_lock(pcontext->mutex); //take mutex
     if(q->number_of_elements>0){
       //er is werk
       while(q->number_of_elements > 0){
-	element = q->list[q->number_of_elements];
+	element = q->list[q->number_of_elements-1];
 	iph = element->iph;
 	tcph = element->tcph;
 	
@@ -42,12 +41,18 @@ void *process_queue(void*ptr){
 	free(element); //geef element terug vrij
 	q->number_of_elements--; //decrement aantal elementen.
       }
+      pthread_mutex_unlock(pcontext->mutex);
+      pthread_cond_signal(pcontext->conditie); //unblock thread blocking on pcontext->conditie
+      
     }else{
       //er is geen werk
-      pthread_cond_signal(pcontext->conditie);
+      pthread_cond_wait(pcontext->conditie,
+			pcontext->mutex);
       pthread_mutex_unlock(pcontext->mutex);
+
     }
-    //laat de mutex terug vrij voor andere threads.
-    pthread_mutex_unlock(pcontext->mutex); 
   }
+  
+  pthread_cond_signal(pcontext->conditie);
+  pthread_mutex_unlock(pcontext->mutex); 
 }

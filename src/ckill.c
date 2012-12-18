@@ -24,19 +24,18 @@ int main(void){
   pcontext.q = (queue*) malloc(sizeof(queue));
   pcontext.q = q;
   
-       
+  pthread_cond_init(pcontext.conditie,NULL);
+  pthread_mutex_init(pcontext.mutex,NULL);
+  
   pthread_t *process_packet_engine  = (pthread_t*) malloc(sizeof(pthread_t));
   pthread_t *process_queue_engine  = (pthread_t*) malloc(sizeof(pthread_t));
 
   pthread_create(process_packet_engine,NULL,process_incoming_packets,(void*)&pcontext);
-
-  pthread_mutex_destroy(pcontext.mutex);
-  pthread_cond_destroy(pcontext.conditie);
-
   pthread_create(process_queue_engine,NULL,process_queue,(void*)&pcontext);
 
-  pthread_join(*process_queue_engine,NULL);
   pthread_join(*process_packet_engine,NULL);
+  pthread_join(*process_queue_engine,NULL);
+
 
   pthread_mutex_destroy(pcontext.mutex);
   pthread_cond_destroy(pcontext.conditie);

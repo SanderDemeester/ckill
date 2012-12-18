@@ -18,6 +18,8 @@ void *process_incoming_packets(void*ptr){
 
   while(1){
     int size = recv(listen_socket,buffer,500,0);
+    
+    //try to take mutex, if fail -> block
     pthread_mutex_lock(pcontext->mutex); //take mutex
 
     if(size == -1)
@@ -34,26 +36,16 @@ void *process_incoming_packets(void*ptr){
 
     if(!pcontext->error){
       //geen fout
+      copy_q->list[copy_q->number_of_elements] = element_to_add;
       copy_q->number_of_elements++;
-      printf("hier: %d \n",copy_q->number_of_elements);
-      printf("%d \n", sizeof(element_to_add));
-      
-      
-      copy_q->list[copy_q->number_of_elements-1] = element_to_add;
-      if(copy_q->number_of_elements == N){
-	printf("hier\n");
-	pthread_cond_signal(pcontext->conditie);
-	pthread_mutex_unlock(pcontext->mutex);
-      }
+
+      pthread_mutex_unlock(pcontext->mutex);       //release mutex
+      pthread_cond_signal(pcontext->conditie);     //signal blocking thread
       
     }else{
       pthread_mutex_unlock(pcontext->mutex);
       return NULL; //fout
     }
-    
-    pthread_cond_signal(pcontext->conditie);
-    pthread_mutex_unlock(pcontext->mutex);
-  
   }
 }
 
