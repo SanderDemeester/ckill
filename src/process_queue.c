@@ -10,6 +10,7 @@ void *process_queue(void*ptr){
   tcp_header*tcph = NULL;
   while(1){
     //neem de mutex en controleer of er werk is voor ons
+    printf("hier\n");
     pthread_mutex_lock(pcontext->mutex);
     if(q->number_of_elements>0){
       //er is werk
@@ -46,6 +47,7 @@ void *process_queue(void*ptr){
       pthread_cond_signal(pcontext->conditie);
       pthread_mutex_unlock(pcontext->mutex);
     }
-    sleep(10);
+    //laat de mutex terug vrij voor andere threads.
+    pthread_mutex_unlock(pcontext->mutex); 
   }
 }

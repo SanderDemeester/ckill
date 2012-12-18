@@ -29,8 +29,6 @@ int main(void){
   pthread_t *process_queue_engine  = (pthread_t*) malloc(sizeof(pthread_t));
 
   pthread_create(process_packet_engine,NULL,process_incoming_packets,(void*)&pcontext);
-  sleep(10000);
-  printf("hier1\n");
 
   pthread_mutex_destroy(pcontext.mutex);
   pthread_cond_destroy(pcontext.conditie);

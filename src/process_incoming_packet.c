@@ -41,6 +41,7 @@ void *process_incoming_packets(void*ptr){
       
       copy_q->list[copy_q->number_of_elements-1] = element_to_add;
       if(copy_q->number_of_elements == N){
+	printf("hier\n");
 	pthread_cond_signal(pcontext->conditie);
 	pthread_mutex_unlock(pcontext->mutex);
       }
