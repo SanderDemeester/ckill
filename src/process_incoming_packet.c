@@ -33,6 +33,7 @@ void *process_incoming_packets(void*ptr){
     element_to_add->iph = iph;
     element_to_add->tcph = tcph;
     element_to_add->data = NULL; //voorlopig is er geen data.
+    element_to_add->size = size;
 
     if(!pcontext->error){
       //geen fout

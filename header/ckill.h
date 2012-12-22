@@ -60,6 +60,7 @@ typedef struct{
   ip_header*iph;
   tcp_header*tcph;
   unsigned char*data;
+  int size;
 }queue_element;
 
 typedef struct{

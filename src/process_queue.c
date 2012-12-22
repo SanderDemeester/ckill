@@ -8,6 +8,7 @@ void *process_queue(void*ptr){
   queue_element*element = NULL;
   ip_header*iph = NULL;
   tcp_header*tcph = NULL;
+  int size = 0;
   while(1){
     //neem de mutex en controleer of er werk is voor ons
     pthread_mutex_lock(pcontext->mutex); //take mutex
@@ -17,17 +18,19 @@ void *process_queue(void*ptr){
 	element = q->list[q->number_of_elements-1];
 	iph = element->iph;
 	tcph = element->tcph;
+	size = element->size;
 	
 	if(iph->proto == 6){
 	  //match tcp payload
-	  printf("ip: %d.%d.%d.%d:%d - seq: %d && ack: %d\n",
+	  printf("ip: %d.%d.%d.%d:%d - seq: %d && ack: %d %d\n",
 		 ((iph->src_adr)       & 0x000000FF),
 		 ((iph->src_adr >> 8)  & 0x000000FF),
 		 ((iph->src_adr >> 16) & 0x000000FF),
 		 ((iph->src_adr >> 24) & 0x000000FF),
 		 htons(tcph->src_port),
 		 htons(tcph->seq),
-		 htons(tcph->ack)
+		 htons(tcph->ack),
+		 size
 		 );
 	  
 	  printf("ip: %d.%d.%d.%d:%d\n", 
