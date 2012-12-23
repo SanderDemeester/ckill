@@ -2,16 +2,18 @@
 #include "header/process_queue.h"
 #include "header/process_incoming_packet.h"
 
-int main(void){
-
+int main(int argc, char*argv[]){
+  
   if(getuid()){
     printf("U root?\n");
     exit(-1);
   }
 
+
   volatile pthread_context pcontext;
   pcontext.conditie    = (pthread_cond_t*)   malloc(sizeof(pthread_cond_t));
   pcontext.mutex       = (pthread_mutex_t*)  malloc(sizeof(pthread_mutex_t));
+  pcontext.arg         = (pthread_arg*)      malloc(sizeof(pthread_arg));
   pcontext.error       = 0;
   pcontext.connections = (flow*) malloc(sizeof(flow));
 
@@ -29,6 +31,23 @@ int main(void){
   
   pthread_t *process_packet_engine  = (pthread_t*) malloc(sizeof(pthread_t));
   pthread_t *process_queue_engine  = (pthread_t*) malloc(sizeof(pthread_t));
+
+  if(argc == 2){
+    //default is all interfaces
+    if(!strcmp(argv[1],"all")){
+      pcontext.arg->inf = (char*) malloc(sizeof(char)*3);
+      pcontext.arg->inf = "all";
+    }else{
+      pcontext.arg->inf = argv[1];
+    }
+  }else if(argc == 1){
+    pcontext.arg->inf = (char*) malloc(sizeof(char)*3);
+    pcontext.arg->inf = "all";
+  }
+    
+
+  
+  printf("%s \n", pcontext.arg->inf);
 
   pthread_create(process_packet_engine,NULL,process_incoming_packets,(void*)&pcontext);
   pthread_create(process_queue_engine,NULL,process_queue,(void*)&pcontext);

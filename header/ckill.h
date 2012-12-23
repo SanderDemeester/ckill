@@ -57,6 +57,10 @@ struct tcp_options{
 };
 
 typedef struct{
+  char*inf;
+}pthread_arg;
+
+typedef struct{
   ip_header*iph;
   tcp_header*tcph;
   unsigned char*data;
@@ -68,13 +72,15 @@ typedef struct{
   queue_element **list;
 }queue;
 
- typedef struct{
+typedef struct{
    pthread_cond_t*conditie;
    pthread_mutex_t*mutex;
    queue*q;
    int error;
    flow*connections;
- }pthread_context;
+   pthread_arg*arg;
+}pthread_context;
+
 
 //funcion definitions
 //process incoming packets

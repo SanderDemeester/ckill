@@ -3,16 +3,19 @@
 #endif
 
 void *process_incoming_packets(void*ptr){
-
+  
   pthread_context*pcontext = (pthread_context*)ptr;
   queue_element *element_to_add = NULL;
   int listen_socket = socket(AF_INET,SOCK_RAW, IPPROTO_TCP);
   unsigned char buffer[500];
   struct sockaddr_in *me = (struct sockaddr_in*) malloc(sizeof(struct sockaddr_in));
+  struct ifreq *ifr;
   queue*copy_q = pcontext->q;
+
   me->sin_family = AF_INET;
   me->sin_addr.s_addr = INADDR_ANY;
   me->sin_port = 0;
+
 
   bind(listen_socket,(struct sockaddr*)me,sizeof(*me));
 
