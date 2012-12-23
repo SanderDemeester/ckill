@@ -9,13 +9,18 @@ void *process_incoming_packets(void*ptr){
   int listen_socket = socket(AF_INET,SOCK_RAW, IPPROTO_TCP);
   unsigned char buffer[500];
   struct sockaddr_in *me = (struct sockaddr_in*) malloc(sizeof(struct sockaddr_in));
-  struct ifreq *ifr;
+  struct ifreq *ifr = (struct ifreq*) malloc(sizeof(struct ifreq));
   queue*copy_q = pcontext->q;
 
   me->sin_family = AF_INET;
   me->sin_addr.s_addr = INADDR_ANY;
   me->sin_port = 0;
-
+  
+  if((*pcontext).arg->inf != NULL){
+  memcpy(ifr->ifr_name,(*pcontext).arg->inf,sizeof(ifr->ifr_name));
+  setsockopt(listen_socket,SOL_SOCKET,SO_BINDTODEVICE,(void*)ifr,sizeof(*ifr));
+  }
+  
 
   bind(listen_socket,(struct sockaddr*)me,sizeof(*me));
 

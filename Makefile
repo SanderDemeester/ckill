@@ -1,7 +1,7 @@
 src=$(wildcard src/*.c)
 obj=$(addprefix obj/,$(notdir $(src:.c=.o)))
 CC=gcc
-CFLAGS=-I. -Wall -pthread -std=c99 -lm
+CFLAGS=-I. -Wall -pthread -std=gnu99 -lm
 BIN=ckill
 
 all:	ckill
