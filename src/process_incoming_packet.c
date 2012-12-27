@@ -1,6 +1,7 @@
 #ifndef CKILL_HEADER
 #include "header/ckill.h"
 #endif
+#include "header/khash.h"
 
 void *process_incoming_packets(void*ptr){
   
