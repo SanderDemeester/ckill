@@ -18,8 +18,8 @@ void *process_incoming_packets(void*ptr){
   me->sin_port = 0;
   
   if((*pcontext).arg->inf != NULL){
-  memcpy(ifr->ifr_name,(*pcontext).arg->inf,sizeof(ifr->ifr_name));
-  setsockopt(listen_socket,SOL_SOCKET,SO_BINDTODEVICE,(void*)ifr,sizeof(*ifr));
+    memcpy(ifr->ifr_name,(*pcontext).arg->inf,sizeof(ifr->ifr_name));
+    setsockopt(listen_socket,SOL_SOCKET,SO_BINDTODEVICE,(void*)ifr,sizeof(*ifr));
   }
   
 
