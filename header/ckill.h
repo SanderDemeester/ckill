@@ -14,6 +14,10 @@
 #include <arpa/inet.h>
 #include <pthread.h>
 
+#ifndef __AC_KHASH_H
+#include "khash.h"
+#endif
+
 #define N 100
 
 typedef struct{
@@ -47,6 +51,8 @@ typedef struct{
   struct sockaddr_in *dst;
 }flow;
 
+
+
 struct tcp_options{
   int urg; //urgent flag
   int ack; //ack
@@ -56,8 +62,10 @@ struct tcp_options{
   int fin; //fin
 };
 
+KHASH_MAP_INIT_INT(40,flow);
 typedef struct{
   char*inf;
+  khash_t(40) *flow_hashmap;
 }pthread_arg;
 
 typedef struct{
@@ -80,6 +88,8 @@ typedef struct{
    flow*connections;
    pthread_arg*arg;
 }pthread_context;
+
+
 
 
 //funcion definitions
