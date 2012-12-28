@@ -49,9 +49,10 @@ typedef struct{
   uint32_t flow_id;
   struct sockaddr_in *src;
   struct sockaddr_in *dst;
+  ip_header*iph;
+  tcp_header*tcph;
+  int size;
 }flow;
-
-
 
 struct tcp_options{
   int urg; //urgent flag
@@ -62,10 +63,10 @@ struct tcp_options{
   int fin; //fin
 };
 
-KHASH_MAP_INIT_INT(40,flow);
+KHASH_MAP_INIT_INT(32,flow*);
 typedef struct{
   char*inf;
-  khash_t(40) *flow_hashmap;
+  khash_t(32) *flow_hashmap;
 }pthread_arg;
 
 typedef struct{

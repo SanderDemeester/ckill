@@ -23,6 +23,7 @@ int main(int argc, char*argv[]){
   for(int i = 0; i < N; i++)
     q->list[i] = (queue_element*) malloc(sizeof(queue_element));
   
+  pcontext.arg->flow_hashmap = kh_init(32);
   pcontext.q = (queue*) malloc(sizeof(queue));
   pcontext.q = q;
   
