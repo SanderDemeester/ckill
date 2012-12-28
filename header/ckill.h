@@ -48,6 +48,7 @@ typedef struct{
 typedef struct{
   uint8_t ns:1;  //ENC-nonce
   uint8_t cwr:1; //congestion window reduced
+  uint8_t ece:1; //ENC echo indication
   uint8_t urg:1; //urgent flag
   uint8_t ack:1; //ack
   uint8_t psh:1; //push ... the button
@@ -77,6 +78,7 @@ typedef struct{
 typedef struct{
   ip_header*iph;
   tcp_header*tcph;
+  tcp_options*tcpo;
   unsigned char*data;
   int size;
 }queue_element;

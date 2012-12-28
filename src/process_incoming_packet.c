@@ -35,11 +35,24 @@ void *process_incoming_packets(void*ptr){
 
     ip_header *iph = (ip_header*)buffer;
     tcp_header *tcph = (tcp_header*)(buffer + 4 * (iph->version_ihl & 0x0F));
+    uint16_t options = tcph->hlen_re_flag;
+    
+    tcp_options *tcpo = (tcp_options*) malloc(sizeof(tcp_options));
 
+    tcpo->ns  = ((options >> 9) & 0x01);
+    tcpo->cwr = ((options >> 8) & 0x01);
+    tcpo->ece = ((options >> 7) & 0x01);
+    tcpo->urg = ((options >> 6) & 0x01);
+    tcpo->ack = ((options >> 5) & 0x01);
+    tcpo->psh = ((options >> 4) & 0x01);
+    tcpo->rst = ((options >> 3) & 0x01);
+    tcpo->syn = ((options >> 2) & 0x01);
+    tcpo->fin = ((options >> 1) & 0x01);
 
     element_to_add = (queue_element*) malloc(sizeof(queue_element));
     element_to_add->iph = iph;
     element_to_add->tcph = tcph;
+    element_to_add->tcpo = tcpo;
     element_to_add->data = NULL; //voorlopig is er geen data.
     element_to_add->size = size;
 
