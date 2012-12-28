@@ -46,6 +46,8 @@ typedef struct{
 }tcp_header;
 
 typedef struct{
+  uint8_t ns:1;  //ENC-nonce
+  uint8_t cwr:1; //congestion window reduced
   uint8_t urg:1; //urgent flag
   uint8_t ack:1; //ack
   uint8_t psh:1; //push ... the button
