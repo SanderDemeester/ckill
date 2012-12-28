@@ -46,12 +46,12 @@ typedef struct{
 }tcp_header;
 
 typedef struct{
-  int urg; //urgent flag
-  int ack; //ack
-  int psh; //push ... the button
-  int rst; //reset 
-  int syn; //syc
-  int fin; //fin
+  uint8_t urg:1; //urgent flag
+  uint8_t ack:1; //ack
+  uint8_t psh:1; //push ... the button
+  uint8_t rst:1; //reset 
+  uint8_t syn:1; //syc
+  uint8_t fin:1; //fin
 }tcp_options;
 
 typedef struct{
