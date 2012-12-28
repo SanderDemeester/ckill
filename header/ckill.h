@@ -46,22 +46,25 @@ typedef struct{
 }tcp_header;
 
 typedef struct{
-  uint32_t flow_id;
-  struct sockaddr_in *src;
-  struct sockaddr_in *dst;
-  ip_header*iph;
-  tcp_header*tcph;
-  int size;
-}flow;
-
-struct tcp_options{
   int urg; //urgent flag
   int ack; //ack
   int psh; //push ... the button
   int rst; //reset 
   int syn; //syc
   int fin; //fin
-};
+}tcp_options;
+
+typedef struct{
+  uint32_t flow_id;
+  int size;
+  ip_header*iph;
+  tcp_header*tcph;
+  tcp_options tcpop;
+  
+  struct sockaddr_in *src;
+  struct sockaddr_in *dst;
+  
+}flow;
 
 KHASH_MAP_INIT_INT(32,flow*);
 typedef struct{
