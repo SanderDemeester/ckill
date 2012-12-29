@@ -97,10 +97,3 @@ typedef struct{
    pthread_arg*arg;
 }pthread_context;
 
-
-
-
-//funcion definitions
-//process incoming packets
-void *process_incoming_packets(void*ptr);
-void *process_queue(void*ptr);
