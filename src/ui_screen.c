@@ -2,6 +2,7 @@
 #include "header/ckill.h"
 #endif
 
-void ckill_gui(){
-  
+void *ckill_ui(void*ptr){
+  while(1){    
+  } 
 }

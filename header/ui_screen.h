@@ -1,1 +1,1 @@
-void ckill_ui();
+void *ckill_ui(void*ptr);
