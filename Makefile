@@ -1,15 +1,15 @@
 src=$(wildcard src/*.c)
 obj=$(addprefix obj/,$(notdir $(src:.c=.o)))
 CC=gcc
-CFLAGS=-I. -Wall -pthread -std=gnu99 -lm
+CFLAGS=-I. -Wall -lncurses -pthread -std=gnu99 -lm 
 BIN=ckill
 
 all:	ckill
-debug: CC += -g
-debug: ckill
+debug:  CC += -g
+debug:  ckill
 
 ckill: $(obj)
-	$(CC) $(CFLAGS) $(obj) -o $@
+	$(CC) $(obj) $(CFLAGS)-o $@
 obj/%.o: src/%.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 clean:
