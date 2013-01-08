@@ -61,24 +61,24 @@ void *process_queue(void*ptr){
 	    kh_put(32,flow_hashmap,work_flowid,&r);
 	  }	    
 	  
-	  printf("ip: %d.%d.%d.%d:%d - seq: %d && ack: %d %d\n",
-	  	 ((iph->src_adr)       & 0x000000FF),
-	  	 ((iph->src_adr >> 8)  & 0x000000FF),
-	  	 ((iph->src_adr >> 16) & 0x000000FF),
-	  	 ((iph->src_adr >> 24) & 0x000000FF),
-	  	 htons(tcph->src_port),
-	  	 htons(tcph->seq),
-	  	 htons(tcph->ack),
-	  	 size
-	  	 );
+	  /* printf("ip: %d.%d.%d.%d:%d - seq: %d && ack: %d %d\n", */
+	  /* 	 ((iph->src_adr)       & 0x000000FF), */
+	  /* 	 ((iph->src_adr >> 8)  & 0x000000FF), */
+	  /* 	 ((iph->src_adr >> 16) & 0x000000FF), */
+	  /* 	 ((iph->src_adr >> 24) & 0x000000FF), */
+	  /* 	 htons(tcph->src_port), */
+	  /* 	 htons(tcph->seq), */
+	  /* 	 htons(tcph->ack), */
+	  /* 	 size */
+	  /* 	 ); */
 	  
-	  printf("ip: %d.%d.%d.%d:%d\n",
-	  	 ((iph->dst_adr)       & 0x000000FF),
-	  	 ((iph->dst_adr >> 8)  & 0x000000FF),
-	  	 ((iph->dst_adr >> 16) & 0x000000FF),
-	  	 ((iph->dst_adr >> 24) & 0x000000FF),
-	  	 htons(tcph->dst_port)
-	  	 );
+	  /* printf("ip: %d.%d.%d.%d:%d\n", */
+	  /* 	 ((iph->dst_adr)       & 0x000000FF), */
+	  /* 	 ((iph->dst_adr >> 8)  & 0x000000FF), */
+	  /* 	 ((iph->dst_adr >> 16) & 0x000000FF), */
+	  /* 	 ((iph->dst_adr >> 24) & 0x000000FF), */
+	  /* 	 htons(tcph->dst_port) */
+	  /* 	 ); */
 	}
 	free(element); //geef element terug vrij
 	q->number_of_elements--; //decrement aantal elementen.
