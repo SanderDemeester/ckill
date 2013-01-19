@@ -73,7 +73,7 @@ void window_setup(windows*win_struct){
   win_struct->main_window = NULL;
 }
 
-void print_menu(windows*W, int current, char*list[], int n){
+void print_menu(WINDOW *w, int current, char*list[], int n){
   
   int x = 2; //x-cordinate
   int y = 2; //y-cordinate
@@ -82,14 +82,14 @@ void print_menu(windows*W, int current, char*list[], int n){
 
   for(; i < n; i++){
     if(current == i+1){
-      wattron(W->main_window, A_REVERSE);
-      mvprintw(W->main_window,y,x,"%s",*list[i]);
-      wattroff(W->main_window,A_REVERSE);
+      wattron(w, A_REVERSE);
+      mvprintw(w,y,x,"%s",list[i]);
+      wattroff(w,A_REVERSE);
     }else{
-      mvprintw(W->main_window, y,x,"%s",*list[i]);
+      mvprintw(w, y,x,"%s",list[i]);
     }
     ++y;
   }
-  wrefresh(W->main_window);
+  wrefresh(w);
   
 }
