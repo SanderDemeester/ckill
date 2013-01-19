@@ -54,8 +54,11 @@ void *ckill_ui(void*ptr){
   
   wrefresh(win_struct->leftbox);
 
+  //put focus in main window
+  wrefresh(win_struct->main_window);
 
-  while(1){
+
+  while(1){    
   }
 
   
