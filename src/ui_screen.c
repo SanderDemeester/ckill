@@ -72,3 +72,13 @@ void window_setup(windows*win_struct){
   win_struct->rightbox = NULL;
   win_struct->main_window = NULL;
 }
+
+void print_menu(windows*W, int current, char*list[], int n){
+  
+  int x = 0; //x-cordinate
+  int y = 0; //y-cordinate
+  int i = 0; //index counter
+
+  
+  
+}

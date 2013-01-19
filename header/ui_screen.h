@@ -8,3 +8,4 @@ typedef struct{
 
 void window_setup();
 void *ckill_ui(void*ptr);
+void print_menu(windows*W, int current, char*list[], int n);
