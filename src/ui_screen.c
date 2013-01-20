@@ -13,7 +13,7 @@ void *ckill_ui(void*ptr){
   int input = 0;
   char* hostname = (char*) malloc(sizeof(char)*1024);
   char*list[] = {"Test string1","Test string2","Test string3","Test String4"};
-  int current = 0;
+  int current = 1;
   int n_element = 4;
   gethostname(hostname,1023);
 
@@ -72,7 +72,7 @@ void *ckill_ui(void*ptr){
     input = wgetch(win_struct->main_window);
     switch(input){
     case KEY_UP:
-      if(current) current = n_element; //jump to last element in list.
+      if(current == 1) current = n_element; //jump to last element in list.
       else --current; //decrement current
       break;
       
