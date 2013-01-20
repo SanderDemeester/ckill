@@ -12,18 +12,19 @@ void *ckill_ui(void*ptr){
   int col = 0;
   int input = 0;
   char* hostname = (char*) malloc(sizeof(char)*1024);
-  char*list[] = {"1 1.1.1.1 2.2.2.2","2 2.2.2.2 1.1.1.1","3 4.3.2.1 1.2.3.4"};
+  char*list[] = {"t1","t2","t3",(char*)NULL};
   int current = 1;
-  int n_element = 3;
+  int n_element = SIZE(list);
   MENU*menu;
   ITEM **items = (ITEM**) calloc(n_element,sizeof(ITEM*));
   for(int i = 0; i < n_element; i++)
-    items[i] = new_item(list[i],list[i]);
+    items[i] = new_item(list[i],list[i]);  
+
   
   //make menu
   menu = new_menu((ITEM**)items);
   set_menu_mark(menu,"*");
-  
+
   gethostname(hostname,1023);
 
 
@@ -70,31 +71,41 @@ void *ckill_ui(void*ptr){
   mvwprintw(win_struct->main_window,1,1,"flow id");
   mvwprintw(win_struct->main_window,1,9,"dst_ip");
   mvwprintw(win_struct->main_window,1,19,"src_ip");
+
+  //put focus in main window
+  
   
   //enable keypad on main_window
   keypad(win_struct->main_window,TRUE);
 
-  //put focus in main window
-  wrefresh(win_struct->main_window);
-
+  set_menu_win(menu,win_struct->main_window);
+  set_menu_sub(menu,win_struct->main_window);
+  set_menu_format(menu,5,1);
 
   print_in_middle(win_struct->main_window,1,0,40,"Menu",COLOR_PAIR(1));
-  while(1){    
-    input = wgetch(win_struct->main_window);
-    switch(input){
-    case KEY_UP:
-      if(current == 1) current = n_element; //jump to last element in list.
-      else --current; //decrement current
-      break;
-      
-    case KEY_DOWN:
-      if(current == n_element)	current = 1; //jump to first element in list
-      else ++current; //increment current.
-      break;      
-    }
-    print_in_middle(win_struct->main_window,1,0,40,"Menu",COLOR_PAIR(1));
-  }
+
+  mvwaddch(win_struct->main_window,2,0,ACS_LTEE);
+  mvwhline(win_struct->main_window,2,1,ACS_HLINE,38);
+  mvwaddch(win_struct->main_window,2,39,ACS_RTEE);
   
+  post_menu(menu);
+  wrefresh(win_struct->main_window);
+  
+  while((input = wgetch(win_struct->main_window)) != KEY_F(1)){
+    switch(input){
+    case KEY_DOWN:
+      menu_driver(menu,REQ_DOWN_ITEM);
+      break;
+    case KEY_UP:
+      menu_driver(menu,REQ_UP_ITEM);
+      break;
+    }
+    wrefresh(win_struct->main_window);
+  }
+  unpost_menu(menu);
+  free_menu(menu);
+  for(int i = 0; i < n_element; i++)
+    free_item(items[i]);
   
   endwin();
   return 0;
@@ -121,8 +132,6 @@ void print_in_middle(WINDOW*win, int starty,int startx,int width,
   
   t = (width - l/2);
   x = startx + (int)t;
-  wattron(win,color);
   mvwprintw(win,y,x,"%s",string);
-  wattroff(win,color);
   refresh();
 }

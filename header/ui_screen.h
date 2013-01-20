@@ -1,3 +1,4 @@
+#define SIZE(a) (sizeof(a)/sizeof(a[0]))
 static char*NAME="ckill |b087ec466c8101293bb9d934e37d7ab0|";
 
 typedef struct{
