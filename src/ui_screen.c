@@ -19,7 +19,7 @@ void *ckill_ui(void*ptr){
   initscr(); //start ncurses
   cbreak(); //interperter control character as normal characters
 
-  getmaxyx(stdscr,row,col); //get terminal cordinate
+  getmaxyx(stdscr,row,col); row++;//get terminal cordinate
   height = 8; //height left and rightbox
   width = col/2; //width for left and rightbox
   
@@ -83,10 +83,10 @@ void print_menu(WINDOW *w, int current, char*list[], int n){
   for(; i < n; i++){
     if(current == i+1){
       wattron(w, A_REVERSE);
-      mvprintw(w,y,x,"%s",list[i]);
+      mvwprintw(w,y,x,"%s",list[i]);
       wattroff(w,A_REVERSE);
     }else{
-      mvprintw(w, y,x,"%s",list[i]);
+      mvwprintw(w, y,x,"%s",list[i]);
     }
     ++y;
   }
