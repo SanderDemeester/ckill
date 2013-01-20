@@ -12,9 +12,9 @@ void *ckill_ui(void*ptr){
   int col = 0;
   int input = 0;
   char* hostname = (char*) malloc(sizeof(char)*1024);
-  char*list[] = {"Test string1","Test string2","Test string3","Test String4"};
+  char*list[] = {"1 1.1.1.1 2.2.2.2","2 2.2.2.2 1.1.1.1","3 4.3.2.1 1.2.3.4"};
   int current = 1;
-  int n_element = 4;
+  int n_element = 3;
   gethostname(hostname,1023);
 
 
@@ -58,7 +58,9 @@ void *ckill_ui(void*ptr){
   
   wrefresh(win_struct->leftbox);
 
-  mvwprintw(win_struct->main_window,1,1,"Use keypad to throught the list");
+  mvwprintw(win_struct->main_window,1,1,"flow id");
+  mvwprintw(win_struct->main_window,1,9,"dst_ip");
+  mvwprintw(win_struct->main_window,1,19,"src_ip");
   
   //enable keypad on main_window
   keypad(win_struct->main_window,TRUE);
