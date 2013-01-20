@@ -10,7 +10,11 @@ void *ckill_ui(void*ptr){
   int height = 0;
   int row = 0;
   int col = 0;
+  int input = 0;
   char* hostname = (char*) malloc(sizeof(char)*1024);
+  char*list[] = {"Test string1","Test string2","Test string3","Test String4"};
+  int current = 0;
+  int n_element = 4;
   gethostname(hostname,1023);
 
 
@@ -54,13 +58,32 @@ void *ckill_ui(void*ptr){
   
   wrefresh(win_struct->leftbox);
 
+  mvwprintw(win_struct->main_window,1,1,"Use keypad to throught the list");
+  
+  //enable keypad on main_window
+  keypad(win_struct->main_window,TRUE);
+
   //put focus in main window
   wrefresh(win_struct->main_window);
 
 
+  print_menu(win_struct->main_window,current,list,n_element);
   while(1){    
+    input = wgetch(win_struct->main_window);
+    switch(input){
+    case KEY_UP:
+      if(current) current = n_element; //jump to last element in list.
+      else --current; //decrement current
+      break;
+      
+    case KEY_DOWN:
+      if(current == n_element)	current = 1; //jump to first element in list
+      else ++current; //increment current.
+      break;      
+    }
+    print_menu(win_struct->main_window,current,list,n_element);
   }
-
+  
   
   endwin();
   return 0;
