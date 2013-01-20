@@ -9,5 +9,5 @@ typedef struct{
 
 void window_setup();
 void *ckill_ui(void*ptr);
-void print_in_middle(WINDOW*win, int starty,int startx,int width,
+void print_in_middle(windows*w, int starty,int startx,int width,
 		     char*string, chtype color);
