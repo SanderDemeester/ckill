@@ -1,5 +1,6 @@
 #define CKILL_HEADER
 #include <ncurses.h>
+#include <menu.h>
 
 #include <stdio.h>
 #include <stdint.h>

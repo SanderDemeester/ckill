@@ -15,6 +15,15 @@ void *ckill_ui(void*ptr){
   char*list[] = {"1 1.1.1.1 2.2.2.2","2 2.2.2.2 1.1.1.1","3 4.3.2.1 1.2.3.4"};
   int current = 1;
   int n_element = 3;
+  MENU*menu;
+  ITEM **items = (ITEM**) calloc(n_element,sizeof(ITEM*));
+  for(int i = 0; i < n_element; i++)
+    items[i] = new_item(list[i],list[i]);
+  
+  //make menu
+  menu = new_menu((ITEM**)items);
+  set_menu_mark(menu,"*");
+  
   gethostname(hostname,1023);
 
 
@@ -69,7 +78,7 @@ void *ckill_ui(void*ptr){
   wrefresh(win_struct->main_window);
 
 
-  print_menu(win_struct->main_window,current,list,n_element);
+  print_in_middle(win_struct->main_window,1,0,40,"Menu",COLOR_PAIR(1));
   while(1){    
     input = wgetch(win_struct->main_window);
     switch(input){
@@ -83,7 +92,7 @@ void *ckill_ui(void*ptr){
       else ++current; //increment current.
       break;      
     }
-    print_menu(win_struct->main_window,current,list,n_element);
+    print_in_middle(win_struct->main_window,1,0,40,"Menu",COLOR_PAIR(1));
   }
   
   
@@ -98,23 +107,22 @@ void window_setup(windows*win_struct){
   win_struct->main_window = NULL;
 }
 
-void print_menu(WINDOW *w, int current, char*list[], int n){
-  
-  int x = 2; //x-cordinate
-  int y = 2; //y-cordinate
-  int i = 0; //index counter
+void print_in_middle(WINDOW*win, int starty,int startx,int width,
+		     char*string, chtype color){
+  int l = strlen(string);
+  int x;
+  int y;
+  int t;
 
+  if(startx != 0) x = startx;
+  if(starty != 0) y = starty;
 
-  for(; i < n; i++){
-    if(current == i+1){
-      wattron(w, A_REVERSE);
-      mvwprintw(w,y,x,"%s",list[i]);
-      wattroff(w,A_REVERSE);
-    }else{
-      mvwprintw(w, y,x,"%s",list[i]);
-    }
-    ++y;
-  }
-  wrefresh(w);
+  if(width == 0) width = 80;
   
+  t = (width - l/2);
+  x = startx + (int)t;
+  wattron(win,color);
+  mvwprintw(win,y,x,"%s",string);
+  wattroff(win,color);
+  refresh();
 }
