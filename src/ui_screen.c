@@ -104,8 +104,8 @@ void *ckill_ui(void*ptr){
   set_menu_back(menu,COLOR_RED);
 
   set_menu_win(menu,win_struct->main_window);
-  set_menu_sub(menu,derwin(win_struct->main_window,height,width,3,1));
-  set_menu_format(menu,height,1);
+  set_menu_sub(menu,derwin(win_struct->main_window,(row-height)-4,width,3,1));
+  set_menu_format(menu,(row-height)-4,1);
   set_menu_mark(menu,"* ");
 
   print_in_middle(win_struct,1,2,1,"Menu",COLOR_PAIR(1),col/7);
