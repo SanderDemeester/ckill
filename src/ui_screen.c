@@ -1,12 +1,14 @@
 #ifndef CKILL_HEADER
 #include "header/ckill.h"
 #endif
+#ifndef __SCREEN_UI_H
 #include "header/ui_screen.h"
+#endif
 
 void *ckill_ui(void*ptr){
   windows*win_struct = (windows*) malloc(sizeof(windows));
   pthread_context*pcontext = (pthread_context*)ptr;
-
+  
   int width = 0;
   int height = 0;
   int row = 0;
@@ -120,6 +122,10 @@ void *ckill_ui(void*ptr){
   
   post_menu(menu);
   wrefresh(win_struct->main_window);
+  pthread_mutex_lock(pcontext->ui_mutex);
+  pcontext->ncurses_window = win_struct;
+  pthread_mutex_unlock(pcontext->ui_mutex);
+
 
   while((input = wgetch(win_struct->main_window)) != KEY_F(1)){
     switch(input){
@@ -137,7 +143,9 @@ void *ckill_ui(void*ptr){
       break;
     }
     
+    pthread_mutex_lock(pcontext->ui_mutex);
     wrefresh(win_struct->main_window);
+    pthread_mutex_unlock(pcontext->ui_mutex);
   }
   unpost_menu(menu);
   free_menu(menu);

@@ -5,6 +5,7 @@
 void *process_queue(void*ptr){
   pthread_context*pcontext = (pthread_context*)ptr;
   queue*q = pcontext->q;
+  pcontext->number_of_flows = 0;
   queue_element*element = NULL;
   ip_header*iph = NULL;
   tcp_header*tcph = NULL;
@@ -51,6 +52,15 @@ void *process_queue(void*ptr){
 	    f->iph = iph;
 	    f->tcph = tcph;
 	    f->size = size;
+
+	    pcontext->number_of_flows++; //increment number of flows
+	    pthread_mutex_lock(pcontext->ui_mutex); //take mutex
+	    mvwprintw(pcontext->ncurses_window->leftbox,3,1,"number of flows: %d",
+		      pcontext->number_of_flows);
+	    wrefresh(pcontext->ncurses_window->leftbox);
+	    pthread_mutex_unlock(pcontext->ui_mutex);
+	    
+	    
 	    itr = kh_put(32,flow_hashmap,work_flowid,&r);
 	    kh_value(flow_hashmap,itr) = f;
 	  }else{

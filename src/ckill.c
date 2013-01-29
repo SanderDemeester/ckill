@@ -1,7 +1,11 @@
 #include "header/ckill.h"
 #include "header/process_queue.h"
 #include "header/process_incoming_packet.h"
+
+#ifndef __SCREEN_UI_H
 #include "header/ui_screen.h"
+#endif
+
 
 int main(int argc, char*argv[]){
   

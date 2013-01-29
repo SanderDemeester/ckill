@@ -20,6 +20,9 @@
 #include "khash.h"
 #endif
 
+#ifndef __SCREEN_UI_H
+#include "ui_screen.h"
+#endif
 #define N 100
 
 typedef struct{
@@ -105,5 +108,6 @@ typedef struct{
    flow*connections;
    pthread_arg*arg;
    int number_of_flows; //record number of flows
+   windows*ncurses_window; //a pointer to our windows
 }pthread_context;
 
