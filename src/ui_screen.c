@@ -5,6 +5,7 @@
 
 void *ckill_ui(void*ptr){
   windows*win_struct = (windows*) malloc(sizeof(windows));
+  pthread_context*pcontext = (pthread_context*)ptr;
 
   int width = 0;
   int height = 0;
@@ -90,7 +91,8 @@ void *ckill_ui(void*ptr){
   //fill in the information fielfd
   mvwprintw(win_struct->leftbox,0,(col/8)-5,NAME);
   mvwprintw(win_struct->leftbox,1,1,"hostname: %s",hostname);
-  mvwprintw(win_struct->leftbox,2,1,"interface: ");
+  
+  mvwprintw(win_struct->leftbox,2,1,"interface: %s",pcontext->arg->inf);
   mvwprintw(win_struct->leftbox,3,1,"number of flows: ");
 
   //for now just print in rightbox some debug info
@@ -155,18 +157,8 @@ void window_setup(windows*win_struct){
 
 void print_in_middle(windows*w, int starty,int startx,int width,
 		     char*string, chtype color,int c){
-  int l = strlen(string);
-  int x;
-  int y;
-  int t;
-
-  if(startx != 0) x = startx;
-  if(starty != 0) y = starty;
-
   if(width == 0) width = 80;
   
-  t = (width - l/2);
-  x = startx + (int)t;
   mvwprintw(w->main_window,1,2,"id",NULL);
   mvwprintw(w->main_window,1,2+2+5,"dest ip",NULL);
   mvwprintw(w->main_window,1,c,"src ip",NULL);

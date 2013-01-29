@@ -14,6 +14,7 @@ int main(int argc, char*argv[]){
   volatile pthread_context pcontext;
   pcontext.conditie    = (pthread_cond_t*)   malloc(sizeof(pthread_cond_t));
   pcontext.mutex       = (pthread_mutex_t*)  malloc(sizeof(pthread_mutex_t));
+  pcontext.ui_mutex    = (pthread_mutex_t*)  malloc(sizeof(pthread_mutex_t));
   pcontext.arg         = (pthread_arg*)      malloc(sizeof(pthread_arg));
   pcontext.error       = 0;
   pcontext.connections = (flow*) malloc(sizeof(flow));
@@ -30,6 +31,7 @@ int main(int argc, char*argv[]){
   
   pthread_cond_init(pcontext.conditie,NULL);
   pthread_mutex_init(pcontext.mutex,NULL);
+  pthread_mutex_init(pcontext.ui_mutex,NULL);
   
   pthread_t *process_packet_engine = (pthread_t*) malloc(sizeof(pthread_t));
   pthread_t *process_queue_engine  = (pthread_t*) malloc(sizeof(pthread_t));

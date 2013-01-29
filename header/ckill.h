@@ -92,7 +92,14 @@ typedef struct{
 
 typedef struct{
    pthread_cond_t*conditie;
-   pthread_mutex_t*mutex;
+   /* Mutex to control acces between  */
+   /* process_queue thread and packet_engine thread */
+   pthread_mutex_t*mutex; 
+
+   /* Mutex to control access between */
+   /* process_queue thread and ui_screen thread */
+   pthread_mutex_t*ui_mutex;
+   
    queue*q;
    int error;
    flow*connections;

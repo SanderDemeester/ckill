@@ -50,6 +50,7 @@ void *process_queue(void*ptr){
 	    f->flow_id = work_flowid;
 	    f->iph = iph;
 	    f->tcph = tcph;
+	    f->size = size;
 	    itr = kh_put(32,flow_hashmap,work_flowid,&r);
 	    kh_value(flow_hashmap,itr) = f;
 	  }else{
@@ -58,6 +59,7 @@ void *process_queue(void*ptr){
 	    int r;
 	    f->iph = iph;
 	    f->tcph = tcph;
+	    f->size+=size;
 	    kh_put(32,flow_hashmap,work_flowid,&r);
 	  }	    
 	  
