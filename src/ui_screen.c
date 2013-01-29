@@ -6,7 +6,7 @@
 #endif
 
 void *ckill_ui(void*ptr){
-  windows*win_struct = (windows*) malloc(sizeof(windows));
+  ncurses_data*win_struct = (ncurses_data*) malloc(sizeof(ncurses_data));
   pthread_context*pcontext = (pthread_context*)ptr;
   
   int width = 0;
@@ -62,10 +62,12 @@ void *ckill_ui(void*ptr){
 
   initscr(); //start ncurses
   cbreak(); //interperter control character as normal characters
+  noecho(); //disable printing characters typed
 
   getmaxyx(stdscr,row,col); 
   height = 8; //height left and rightbox
   width = col/2; //width for left and rightbox
+  win_struct->d = col/7;
   
   start_color(); //enable coloring
   init_pair(1,COLOR_YELLOW,COLOR_BLACK);
@@ -112,15 +114,14 @@ void *ckill_ui(void*ptr){
   set_menu_format(menu,(row-height)-4,1);
   set_menu_mark(menu,"* ");
 
-  print_in_middle(win_struct,1,2,1,"Menu",COLOR_PAIR(1),col/7);
+  print_in_middle(win_struct,1,2,1,"Menu",COLOR_PAIR(1),col);
 
   mvwaddch(win_struct->main_window,2,0,ACS_LTEE);
   mvwhline(win_struct->main_window,2,1,ACS_HLINE,col-2);
   mvwaddch(win_struct->main_window,2,col-1,ACS_RTEE);
-
-
   
   post_menu(menu);
+
   wrefresh(win_struct->main_window);
   pthread_mutex_lock(pcontext->ui_mutex);
   pcontext->ncurses_window = win_struct;
@@ -156,24 +157,26 @@ void *ckill_ui(void*ptr){
   return 0;
 }
 
-void window_setup(windows*win_struct){
+void window_setup(ncurses_data*win_struct){
 
   win_struct->leftbox = NULL;
   win_struct->rightbox = NULL;
   win_struct->main_window = NULL;
 }
 
-void print_in_middle(windows*w, int starty,int startx,int width,
+void print_in_middle(ncurses_data*w, int starty,int startx,int width,
 		     char*string, chtype color,int c){
   if(width == 0) width = 80;
-  
+  int d = c/7;
+  //y,x
   mvwprintw(w->main_window,1,2,"id",NULL);
-  mvwprintw(w->main_window,1,2+2+5,"dest ip",NULL);
-  mvwprintw(w->main_window,1,c,"src ip",NULL);
-  mvwprintw(w->main_window,1,4+(2*c),"BH",NULL);
-  mvwprintw(w->main_window,1,4+(3*c),"flow rate/s",NULL);
-  mvwprintw(w->main_window,1,4+(4*c)+21,"FLAGS",NULL);
-  mvwprintw(w->main_window,1,4+(5*c)+c,"STATE",NULL);
+  mvwprintw(w->main_window,1,d-2,"dest ip",NULL);
+  
+  mvwprintw(w->main_window,1,2*d,"src ip",NULL);
+  mvwprintw(w->main_window,1,3*d,"BH",NULL);
+  mvwprintw(w->main_window,1,4*d,"flow rate/s",NULL);
+  mvwprintw(w->main_window,1,5*d,"FLAGS",NULL);
+  mvwprintw(w->main_window,1,6*d,"STATE",NULL);
   wrefresh(w->main_window);
   wrefresh(w->leftbox);
   wrefresh(w->rightbox);

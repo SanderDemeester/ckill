@@ -108,6 +108,6 @@ typedef struct{
    flow*connections;
    pthread_arg*arg;
    int number_of_flows; //record number of flows
-   windows*ncurses_window; //a pointer to our windows
+   ncurses_data*ncurses_window; //a pointer to our windows
 }pthread_context;
 
