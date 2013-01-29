@@ -97,5 +97,6 @@ typedef struct{
    int error;
    flow*connections;
    pthread_arg*arg;
+   int number_of_flows; //record number of flows
 }pthread_context;
 
