@@ -45,15 +45,13 @@ void *ckill_ui(void*ptr){
 		,"122.872.2.2       3.3.3.3                        223MiB                     82 KiB/s"
 		,(char*)NULL};
   int n_element = SIZE(list);
-  MENU*menu;
-  ITEM **items = (ITEM**) calloc(n_element,sizeof(ITEM*));
+  pcontext->items = (ITEM**) calloc(n_element,sizeof(ITEM*));
   for(int i = 0; i < n_element; i++)
-    items[i] = new_item(list[i],ip[i]);  
+    pcontext->items[i] = new_item(list[i],ip[i]);  
 
   
   //make menu
-  menu = new_menu((ITEM**)items);
-  
+  pcontext->menu = new_menu((ITEM**)pcontext->items);
 
   gethostname(hostname,1023);
 
@@ -107,12 +105,12 @@ void *ckill_ui(void*ptr){
   
   //enable keypad on main_window  
   keypad(win_struct->main_window,TRUE);
-  set_menu_back(menu,COLOR_RED);
+  set_menu_back(pcontext->menu,COLOR_RED);
 
-  set_menu_win(menu,win_struct->main_window);
-  set_menu_sub(menu,derwin(win_struct->main_window,(row-height)-4,width,3,1));
-  set_menu_format(menu,(row-height)-4,1);
-  set_menu_mark(menu,"* ");
+  set_menu_win(pcontext->menu,win_struct->main_window);
+  set_menu_sub(pcontext->menu,derwin(win_struct->main_window,(row-height)-4,width,3,1));
+  set_menu_format(pcontext->menu,(row-height)-4,1);
+  set_menu_mark(pcontext->menu,"* ");
 
   print_in_middle(win_struct,1,2,1,"Menu",COLOR_PAIR(1),col);
 
@@ -120,7 +118,7 @@ void *ckill_ui(void*ptr){
   mvwhline(win_struct->main_window,2,1,ACS_HLINE,col-2);
   mvwaddch(win_struct->main_window,2,col-1,ACS_RTEE);
   
-  post_menu(menu);
+  post_menu(pcontext->menu);
 
   wrefresh(win_struct->main_window);
   pthread_mutex_lock(pcontext->ui_mutex);
@@ -131,16 +129,16 @@ void *ckill_ui(void*ptr){
   while((input = wgetch(win_struct->main_window)) != KEY_F(1)){
     switch(input){
     case KEY_DOWN:
-      menu_driver(menu,REQ_DOWN_ITEM);
+      menu_driver(pcontext->menu,REQ_DOWN_ITEM);
       break;
     case KEY_UP:
-      menu_driver(menu,REQ_UP_ITEM);
+      menu_driver(pcontext->menu,REQ_UP_ITEM);
       break; 
     case KEY_NPAGE:
-      menu_driver(menu, REQ_SCR_DPAGE);
+      menu_driver(pcontext->menu, REQ_SCR_DPAGE);
       break;
     case KEY_PPAGE:
-      menu_driver(menu, REQ_SCR_UPAGE);
+      menu_driver(pcontext->menu, REQ_SCR_UPAGE);
       break;
     }
     
@@ -148,10 +146,10 @@ void *ckill_ui(void*ptr){
     wrefresh(win_struct->main_window);
     pthread_mutex_unlock(pcontext->ui_mutex);
   }
-  unpost_menu(menu);
-  free_menu(menu);
+  unpost_menu(pcontext->menu);
+  free_menu(pcontext->menu);
   for(int i = 0; i < n_element; i++)
-    free_item(items[i]);
+    free_item(pcontext->items[i]);
   
   endwin();
   return 0;

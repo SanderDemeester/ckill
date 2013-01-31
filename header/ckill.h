@@ -110,5 +110,6 @@ typedef struct{
    int number_of_flows; //record number of flows
    ncurses_data*ncurses_window; //a pointer to our windows
    ITEM**items; //array to pointers ITEM
+   MENU*menu; //menu
 }pthread_context;
 
