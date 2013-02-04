@@ -41,6 +41,8 @@ void *process_queue(void*ptr){
 	  work_flowid ^= sp;
 	  work_flowid ^= dp;
 	  
+	  pthread_mutex_lock(pcontext->khash_mutex); //take mutex to use khash
+	  
 	  //check if element exist in hashmap
 	  itr = kh_get(32,flow_hashmap,work_flowid);
 	  int b = (itr == kh_end(flow_hashmap));
@@ -72,6 +74,8 @@ void *process_queue(void*ptr){
 	    f->size+=size;
 	    kh_put(32,flow_hashmap,work_flowid,&r);
 	  }	    
+	  //done using khash
+	  pthread_mutex_unlock(pcontext->khash_mutex);
 	  
 	  /* printf("ip: %d.%d.%d.%d:%d - seq: %d && ack: %d %d\n", */
 	  /* 	 ((iph->src_adr)       & 0x000000FF), */

@@ -17,13 +17,14 @@ int main(int argc, char*argv[]){
 
 
   volatile pthread_context pcontext;
-  pcontext.conditie    = (pthread_cond_t*)   malloc(sizeof(pthread_cond_t));
-  pcontext.mutex       = (pthread_mutex_t*)  malloc(sizeof(pthread_mutex_t));
-  pcontext.ui_mutex    = (pthread_mutex_t*)  malloc(sizeof(pthread_mutex_t));
-  pcontext.khash_mutex = (pthread_mutex_t*)  malloc(sizeof(pthread_mutex_t));
-  pcontext.arg         = (pthread_arg*)      malloc(sizeof(pthread_arg));
-  pcontext.error       = 0;
-  pcontext.connections = (flow*) malloc(sizeof(flow));
+  pcontext.conditie     = (pthread_cond_t*)   malloc(sizeof(pthread_cond_t));
+  pcontext.khash_signal = (pthread_cond_t*)   malloc(sizeof(pthread_cond_t));
+  pcontext.mutex        = (pthread_mutex_t*)  malloc(sizeof(pthread_mutex_t));
+  pcontext.ui_mutex     = (pthread_mutex_t*)  malloc(sizeof(pthread_mutex_t));
+  pcontext.khash_mutex  = (pthread_mutex_t*)  malloc(sizeof(pthread_mutex_t));
+  pcontext.arg          = (pthread_arg*)      malloc(sizeof(pthread_arg));
+  pcontext.error        = 0;
+  pcontext.connections  = (flow*) malloc(sizeof(flow));
 
   queue*q = (queue*) malloc(sizeof(queue));
   q->number_of_elements = 0;
@@ -36,6 +37,7 @@ int main(int argc, char*argv[]){
   pcontext.q = q;
   
   pthread_cond_init(pcontext.conditie,NULL);
+  pthread_cond_init(pcontext.khash_signal,NULL);
   pthread_mutex_init(pcontext.mutex,NULL);
   pthread_mutex_init(pcontext.ui_mutex,NULL);
   pthread_mutex_init(pcontext.khash_mutex,NULL);

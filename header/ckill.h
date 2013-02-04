@@ -105,9 +105,12 @@ typedef struct{
 
 
    /* Mutex to control acces between  */
-   /* ui-events process and packet_engine processor */
-     
+   /* ui-events process and packet_engine processor */     
    pthread_mutex_t*khash_mutex;
+
+   /* We will use in combination with the khash_mutex a condition signal */
+   pthread_cond_t*khash_signal;
+
    
    queue*q;
    int error;
