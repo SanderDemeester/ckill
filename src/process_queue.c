@@ -54,11 +54,11 @@ void *process_queue(void*ptr){
 	    f->size = size;
 
 	    pcontext->number_of_flows++; //increment number of flows
-	    pthread_mutex_lock(pcontext->ui_mutex); //take mutex
-	    mvwprintw(pcontext->ncurses_window->leftbox,3,1,"number of flows: %d",
-		      pcontext->number_of_flows);
-	    wrefresh(pcontext->ncurses_window->leftbox);
-	    pthread_mutex_unlock(pcontext->ui_mutex);
+	    /* pthread_mutex_lock(pcontext->ui_mutex); //take mutex */
+	    /* mvwprintw(pcontext->ncurses_window->leftbox,3,1,"number of flows: %d", */
+	    /* 	      pcontext->number_of_flows); */
+	    /* wrefresh(pcontext->ncurses_window->leftbox); */
+	    /* pthread_mutex_unlock(pcontext->ui_mutex); */
 	    
 	    
 	    itr = kh_put(32,flow_hashmap,work_flowid,&r);
