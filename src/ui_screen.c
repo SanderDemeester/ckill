@@ -57,6 +57,9 @@ void *ckill_ui(void*ptr){
 
 
   window_setup(win_struct);  //setup different window, now just stub.
+  while(1){
+    
+  }
 
   initscr(); //start ncurses
   cbreak(); //interperter control character as normal characters

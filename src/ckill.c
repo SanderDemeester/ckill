@@ -1,6 +1,7 @@
 #include "header/ckill.h"
 #include "header/process_queue.h"
 #include "header/process_incoming_packet.h"
+#include "header/process_ui_queue_events.h"
 
 #ifndef __SCREEN_UI_H
 #include "header/ui_screen.h"
@@ -53,6 +54,7 @@ int main(int argc, char*argv[]){
     pcontext.arg->inf = (char*) malloc(sizeof(char)*3);
     pcontext.arg->inf = "all";
   }
+
   pthread_create(ui_screen_thread,NULL,ckill_ui,(void*)&pcontext);
   pthread_create(process_packet_engine,NULL,process_incoming_packets,(void*)&pcontext);
   pthread_create(process_queue_engine,NULL,process_queue,(void*)&pcontext);
