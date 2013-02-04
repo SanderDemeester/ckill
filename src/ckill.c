@@ -41,6 +41,7 @@ int main(int argc, char*argv[]){
   pthread_t *process_packet_engine = (pthread_t*) malloc(sizeof(pthread_t));
   pthread_t *process_queue_engine  = (pthread_t*) malloc(sizeof(pthread_t));
   pthread_t *ui_screen_thread      = (pthread_t*) malloc(sizeof(pthread_t));
+  pthread_t *process_ui_events     = (pthread_t*) malloc(sizeof(pthread_t));
 
   if(argc == 2){
     //default is all interfaces
@@ -58,10 +59,12 @@ int main(int argc, char*argv[]){
   pthread_create(ui_screen_thread,NULL,ckill_ui,(void*)&pcontext);
   pthread_create(process_packet_engine,NULL,process_incoming_packets,(void*)&pcontext);
   pthread_create(process_queue_engine,NULL,process_queue,(void*)&pcontext);
+  pthread_create(process_ui_events,NULL,process_ui_queue_events,(void*)&pcontext);
 
   pthread_join(*ui_screen_thread,NULL);
   pthread_join(*process_packet_engine,NULL);
   pthread_join(*process_queue_engine,NULL);
+  pthread_join(*process_ui_events,NULL);
 
 
   pthread_mutex_destroy(pcontext.mutex);
