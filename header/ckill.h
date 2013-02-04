@@ -102,6 +102,12 @@ typedef struct{
    /* Mutex to control access between */
    /* process_queue thread and ui_screen thread */
    pthread_mutex_t*ui_mutex;
+
+
+   /* Mutex to control acces between  */
+   /* ui-events process and packet_engine processor */
+     
+   pthread_mutex_t*khash_mutex;
    
    queue*q;
    int error;
