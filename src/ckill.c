@@ -18,7 +18,8 @@ int main(int argc, char*argv[]){
 
   volatile pthread_context pcontext;
   pcontext.conditie     = (pthread_cond_t*)   malloc(sizeof(pthread_cond_t));
-  pcontext.khash_signal = (pthread_cond_t*)   malloc(sizeof(pthread_cond_t));
+  pcontext.menu_signal  = (pthread_cond_t*)   malloc(sizeof(pthread_cond_t));
+  pcontext.item_mutex   = (pthread_mutex_t*)  malloc(sizeof(pthread_mutex_t));
   pcontext.mutex        = (pthread_mutex_t*)  malloc(sizeof(pthread_mutex_t));
   pcontext.ui_mutex     = (pthread_mutex_t*)  malloc(sizeof(pthread_mutex_t));
   pcontext.khash_mutex  = (pthread_mutex_t*)  malloc(sizeof(pthread_mutex_t));
@@ -38,14 +39,15 @@ int main(int argc, char*argv[]){
   pcontext.q = q;
   
   pthread_cond_init(pcontext.conditie,NULL);
-  pthread_cond_init(pcontext.khash_signal,NULL);
+  pthread_cond_init(pcontext.menu_signal,NULL);
+  pthread_mutex_init(pcontext.item_mutex,NULL);
   pthread_mutex_init(pcontext.mutex,NULL);
   pthread_mutex_init(pcontext.ui_mutex,NULL);
   pthread_mutex_init(pcontext.khash_mutex,NULL);
   
   pthread_t *process_packet_engine = (pthread_t*) malloc(sizeof(pthread_t));
   pthread_t *process_queue_engine  = (pthread_t*) malloc(sizeof(pthread_t));
-  //  pthread_t *ui_screen_thread      = (pthread_t*) malloc(sizeof(pthread_t));
+  pthread_t *ui_screen_thread      = (pthread_t*) malloc(sizeof(pthread_t));
   pthread_t *process_ui_events     = (pthread_t*) malloc(sizeof(pthread_t));
 
   if(argc == 2){
@@ -61,12 +63,12 @@ int main(int argc, char*argv[]){
     pcontext.arg->inf = "all";
   }
 
-  //pthread_create(ui_screen_thread,NULL,ckill_ui,(void*)&pcontext);
+  pthread_create(ui_screen_thread,NULL,ckill_ui,(void*)&pcontext);
   pthread_create(process_packet_engine,NULL,process_incoming_packets,(void*)&pcontext);
   pthread_create(process_queue_engine,NULL,process_queue,(void*)&pcontext);
   pthread_create(process_ui_events,NULL,process_ui_queue_events,(void*)&pcontext);
 
-  //pthread_join(*ui_screen_thread,NULL);
+  pthread_join(*ui_screen_thread,NULL);
   pthread_join(*process_packet_engine,NULL);
   pthread_join(*process_queue_engine,NULL);
   pthread_join(*process_ui_events,NULL);

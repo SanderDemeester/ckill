@@ -108,10 +108,12 @@ typedef struct{
    /* ui-events process and packet_engine processor */     
    pthread_mutex_t*khash_mutex;
 
-   /* We will use in combination with the khash_mutex a condition signal */
-   pthread_cond_t*khash_signal;
+   /* A mutex to control acces between menu items */
+   pthread_mutex_t*item_mutex; 
 
-   
+   /* A cond signal for setting up menu */
+   pthread_cond_t*menu_signal;
+
    queue*q;
    int error;
    flow*connections;

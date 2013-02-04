@@ -15,39 +15,14 @@ void *ckill_ui(void*ptr){
   int col = 0;
   int input = 0;
   char* hostname = (char*) malloc(sizeof(char)*1024);
-  char*list[] = {"1    ",
-		 "2    ",
-		 "3    ",
-		 "4    ",
-		 "5    ",
-		 "6    ",
-		 "7    ",
-		 "8    ",
-		 "9    ",
-		 "10    ",
-		 "11   ",
-		 "12    ",
-		 "13    ",		 
-		 (char*)NULL};
-  
-  char*ip[] = {  "192.178.1.1       1.1.1.1                        223MiB                     82 KiB/s"
-		,"123.133.1.1       2.2.2.2                        223MiB                     82 KiB/s"
-		,"122.872.2.2       3.3.3.3                        223MiB                     82 KiB/s"
-		,"123.133.1.1       2.2.2.2                        223MiB                     82 KiB/s"
-		,"122.872.2.2       3.3.3.3                        223MiB                     82 KiB/s"
-		,"123.133.1.1       2.2.2.2                        223MiB                     82 KiB/s"
-		,"122.872.2.2       3.3.3.3                        223MiB                     82 KiB/s"
-		,"123.133.1.1       2.2.2.2                        223MiB                     82 KiB/s"
-		,"122.872.2.2       3.3.3.3                        223MiB                     82 KiB/s"
-		,"123.133.1.1       2.2.2.2                        223MiB                     82 KiB/s"
-		,"122.872.2.2       3.3.3.3                        223MiB                     82 KiB/s"
-		,"123.133.1.1       2.2.2.2                        223MiB                     82 KiB/s"
-		,"122.872.2.2       3.3.3.3                        223MiB                     82 KiB/s"
-		,(char*)NULL};
-  int n_element = SIZE(list);
-  pcontext->items = (ITEM**) calloc(n_element,sizeof(ITEM*));
-  for(int i = 0; i < n_element; i++)
-    pcontext->items[i] = new_item(list[i],ip[i]);  
+  char*list[] = {(char*)NULL};
+  char*ip[] = {(char*)NULL};
+
+  pthread_mutex_lock(pcontext->item_mutex);  
+  pcontext->items = (ITEM**) calloc(1,sizeof(ITEM*));
+  pcontext->items[0] = new_item(list[0],ip[0]);  
+  pthread_cond_signal(pcontext->menu_signal);
+  pthread_mutex_unlock(pcontext->item_mutex);
 
   
   //make menu
@@ -146,10 +121,6 @@ void *ckill_ui(void*ptr){
     pthread_mutex_unlock(pcontext->ui_mutex);
   }
   unpost_menu(pcontext->menu);
-  free_menu(pcontext->menu);
-  for(int i = 0; i < n_element; i++)
-    free_item(pcontext->items[i]);
-  
   endwin();
   return 0;
 }
