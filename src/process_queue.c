@@ -16,7 +16,12 @@ void *process_queue(void*ptr){
   uint16_t dp  = 0;
   uint32_t work_flowid = 0;
   khiter_t itr;
+
+  /* Take pointer to khash */
+  pthread_mutex_lock(pcontext->khash_mutex);
   khash_t(32)*flow_hashmap = pcontext->arg->flow_hashmap;
+  pthread_mutex_unlock(pcontext->khash_mutex);
+
   while(1){
     //neem de mutex en controleer of er werk is voor ons
     pthread_mutex_lock(pcontext->mutex); //take mutex
