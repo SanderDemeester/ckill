@@ -62,8 +62,7 @@ void *process_queue(void*ptr){
 
 	    pcontext->number_of_flows++; //increment number of flows
 	    pthread_mutex_lock(pcontext->ui_mutex); //take mutex
-	    mvwprintw(pcontext->ncurses_window->leftbox,3,1,"number of flows: %d",
-	    	      pcontext->number_of_flows);
+	    mvwprintw(pcontext->ncurses_window->leftbox,3,1,"number of flows: %d", pcontext->number_of_flows);
 	    wrefresh(pcontext->ncurses_window->leftbox);
 	    pthread_mutex_unlock(pcontext->ui_mutex);
 	    
