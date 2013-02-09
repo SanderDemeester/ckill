@@ -24,6 +24,7 @@
 #include "ui_screen.h"
 #endif
 #define N 100
+#define NUMBER_OF_MENU_ENTRYS 1023
 
 typedef struct{
   unsigned char version_ihl; //version
@@ -118,9 +119,15 @@ typedef struct{
    int error;
    flow*connections;
    pthread_arg*arg;
-   int number_of_flows; //record number of flows
+   /* record number of flows, */
+   /* this number is equiv to number of menu entrys */
+   int number_of_flows;
    ncurses_data*ncurses_window; //a pointer to our windows
    ITEM**items; //array to pointers ITEM
    MENU*menu; //menu
+   int row;
+   int height;
+   int widht;
+   int col;
 }pthread_context;
 

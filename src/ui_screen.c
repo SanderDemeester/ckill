@@ -9,6 +9,7 @@ void *ckill_ui(void*ptr){
   ncurses_data*win_struct = (ncurses_data*) malloc(sizeof(ncurses_data));
   pthread_context*pcontext = (pthread_context*)ptr;
   
+  int first = 1;
   int width = 0;
   int height = 0;
   int row = 0;
@@ -19,18 +20,19 @@ void *ckill_ui(void*ptr){
   char*ip[] = {(char*)NULL};
 
   pthread_mutex_lock(pcontext->item_mutex);  
-  pcontext->items = (ITEM**) calloc(1,sizeof(ITEM*));
+  pcontext->items = (ITEM**) calloc(NUMBER_OF_MENU_ENTRYS,sizeof(ITEM*));
+  for(int i = 0; i < NUMBER_OF_MENU_ENTRYS; i++)
+    pcontext->items = (ITEM*) calloc(1,sizeof(ITEM));
+  //NULL-pointer
   pcontext->items[0] = new_item(list[0],ip[0]);  
-  pthread_cond_signal(pcontext->menu_signal);
-  pthread_mutex_unlock(pcontext->item_mutex);
 
-  
   //make menu
   pcontext->menu = new_menu((ITEM**)pcontext->items);
+  pthread_mutex_unlock(pcontext->item_mutex);
 
   gethostname(hostname,1023);
 
-
+  pthread_mutex_lock(pcontext->ui_mutex);
   window_setup(win_struct);  //setup different window, now just stub.
   
   initscr(); //start ncurses
@@ -44,6 +46,11 @@ void *ckill_ui(void*ptr){
   
   start_color(); //enable coloring
   init_pair(1,COLOR_YELLOW,COLOR_BLACK);
+
+  pcontext->row = row;
+  pcontext->height = height;
+  pcontext->widht = width;
+  pcontext->col = col;
 
   // init out three different windows.
   win_struct->leftbox = newwin(height,width,0,0);
@@ -96,23 +103,34 @@ void *ckill_ui(void*ptr){
   post_menu(pcontext->menu);
 
   wrefresh(win_struct->main_window);
-  pthread_mutex_lock(pcontext->ui_mutex);
   pcontext->ncurses_window = win_struct;
   pthread_mutex_unlock(pcontext->ui_mutex);
+  
+  while(first || input != KEY_F(1)){
+    if(first) first = 0;
 
-  while((input = wgetch(win_struct->main_window)) != KEY_F(1)){
+    pthread_mutex_lock(pcontext->ui_mutex);
+    input = wgetch(win_struct->main_window);
+    pthread_mutex_unlock(pcontext->ui_mutex);
+    usleep(500);
+
+    pthread_mutex_lock(pcontext->item_mutex);
     switch(input){
     case KEY_DOWN:
       menu_driver(pcontext->menu,REQ_DOWN_ITEM);
+      pthread_mutex_unlock(pcontext->item_mutex);
       break;
     case KEY_UP:
       menu_driver(pcontext->menu,REQ_UP_ITEM);
+      pthread_mutex_unlock(pcontext->item_mutex);
       break; 
     case KEY_NPAGE:
       menu_driver(pcontext->menu, REQ_SCR_DPAGE);
+      pthread_mutex_unlock(pcontext->item_mutex);
       break;
     case KEY_PPAGE:
       menu_driver(pcontext->menu, REQ_SCR_UPAGE);
+      pthread_mutex_unlock(pcontext->item_mutex);
       break;
     }
     
