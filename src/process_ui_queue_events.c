@@ -33,7 +33,7 @@ void *process_ui_queue_events(void*ptr){
 
       
       	  // Check if bucket is used
-      	if(kh_exist(flow_hashmap,itr)){
+      	if(kh_exist(flow_hashmap,itr) && counter > NUMBER_OF_MENU_ENTRYS){
       	  f = kh_value(flow_hashmap,itr);
 
       	  list_element = (char) counter;
