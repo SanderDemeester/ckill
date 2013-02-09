@@ -18,8 +18,6 @@ int main(int argc, char*argv[]){
 
   volatile pthread_context pcontext;
   pcontext.conditie     = (pthread_cond_t*)   malloc(sizeof(pthread_cond_t));
-  pcontext.menu_signal  = (pthread_cond_t*)   malloc(sizeof(pthread_cond_t));
-  pcontext.item_mutex   = (pthread_mutex_t*)  malloc(sizeof(pthread_mutex_t));
   pcontext.mutex        = (pthread_mutex_t*)  malloc(sizeof(pthread_mutex_t));
   pcontext.ui_mutex     = (pthread_mutex_t*)  malloc(sizeof(pthread_mutex_t));
   pcontext.khash_mutex  = (pthread_mutex_t*)  malloc(sizeof(pthread_mutex_t));
@@ -39,8 +37,6 @@ int main(int argc, char*argv[]){
   pcontext.q = q;
   
   pthread_cond_init(pcontext.conditie,NULL);
-  pthread_cond_init(pcontext.menu_signal,NULL);
-  pthread_mutex_init(pcontext.item_mutex,NULL);
   pthread_mutex_init(pcontext.mutex,NULL);
   pthread_mutex_init(pcontext.ui_mutex,NULL);
   pthread_mutex_init(pcontext.khash_mutex,NULL);

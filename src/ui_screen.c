@@ -5,11 +5,12 @@
 #include "header/ui_screen.h"
 #endif
 
+static char*NAME="ckill |b087ec466c8101293bb9d934e37d7ab0|";
+
 void *ckill_ui(void*ptr){
   ncurses_data*win_struct = (ncurses_data*) malloc(sizeof(ncurses_data));
   pthread_context*pcontext = (pthread_context*)ptr;
   
-  int first = 1;
   int width = 0;
   int height = 0;
   int row = 0;
@@ -19,22 +20,21 @@ void *ckill_ui(void*ptr){
   char*list[] = {(char*)NULL};
   char*ip[] = {(char*)NULL};
 
-  pthread_mutex_lock(pcontext->item_mutex);  
   pcontext->items = (ITEM**) calloc(NUMBER_OF_MENU_ENTRYS,sizeof(ITEM*));
   for(int i = 0; i < NUMBER_OF_MENU_ENTRYS; i++)
-    pcontext->items = (ITEM*) calloc(1,sizeof(ITEM));
-  //NULL-pointer
+    pcontext->items[i] = (ITEM*) calloc(1,sizeof(ITEM));
   pcontext->items[0] = new_item(list[0],ip[0]);  
 
   //make menu
   pcontext->menu = new_menu((ITEM**)pcontext->items);
-  pthread_mutex_unlock(pcontext->item_mutex);
 
   gethostname(hostname,1023);
 
   pthread_mutex_lock(pcontext->ui_mutex);
   window_setup(win_struct);  //setup different window, now just stub.
-  
+
+  wtimeout(win_struct->main_window,500); //non-blocking
+
   initscr(); //start ncurses
   cbreak(); //interperter control character as normal characters
   noecho(); //disable printing characters typed
@@ -105,33 +105,21 @@ void *ckill_ui(void*ptr){
   wrefresh(win_struct->main_window);
   pcontext->ncurses_window = win_struct;
   pthread_mutex_unlock(pcontext->ui_mutex);
-  
-  while(first || input != KEY_F(1)){
-    if(first) first = 0;
 
-    pthread_mutex_lock(pcontext->ui_mutex);
-    input = wgetch(win_struct->main_window);
-    pthread_mutex_unlock(pcontext->ui_mutex);
-    usleep(500);
-
-    pthread_mutex_lock(pcontext->item_mutex);
+  while((input = wgetch(win_struct->main_window)) != KEY_F(1)){
     switch(input){
     case KEY_DOWN:
       menu_driver(pcontext->menu,REQ_DOWN_ITEM);
-      pthread_mutex_unlock(pcontext->item_mutex);
-      break;
+        break;
     case KEY_UP:
       menu_driver(pcontext->menu,REQ_UP_ITEM);
-      pthread_mutex_unlock(pcontext->item_mutex);
-      break; 
+        break; 
     case KEY_NPAGE:
       menu_driver(pcontext->menu, REQ_SCR_DPAGE);
-      pthread_mutex_unlock(pcontext->item_mutex);
-      break;
+        break;
     case KEY_PPAGE:
       menu_driver(pcontext->menu, REQ_SCR_UPAGE);
-      pthread_mutex_unlock(pcontext->item_mutex);
-      break;
+        break;
     }
     
     pthread_mutex_lock(pcontext->ui_mutex);

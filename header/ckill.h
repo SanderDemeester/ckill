@@ -96,6 +96,7 @@ typedef struct{
 
 typedef struct{
    pthread_cond_t*conditie;
+
    /* Mutex to control acces between  */
    /* process_queue thread and packet_engine thread */
    pthread_mutex_t*mutex; 
@@ -104,27 +105,30 @@ typedef struct{
    /* process_queue thread and ui_screen thread */
    pthread_mutex_t*ui_mutex;
 
-
    /* Mutex to control acces between  */
    /* ui-events process and packet_engine processor */     
    pthread_mutex_t*khash_mutex;
-
-   /* A mutex to control acces between menu items */
-   pthread_mutex_t*item_mutex; 
-
-   /* A cond signal for setting up menu */
-   pthread_cond_t*menu_signal;
 
    queue*q;
    int error;
    flow*connections;
    pthread_arg*arg;
+
    /* record number of flows, */
    /* this number is equiv to number of menu entrys */
    int number_of_flows;
-   ncurses_data*ncurses_window; //a pointer to our windows
-   ITEM**items; //array to pointers ITEM
-   MENU*menu; //menu
+
+   /* a pointer to our windows */
+   ncurses_data*ncurses_window;
+   
+   /* Array to pointers ITEMS */
+   ITEM**items;
+   
+   /* Menu */
+   MENU*menu; 
+   
+   char*list[];
+   char*ip[];
    int row;
    int height;
    int widht;
