@@ -47,6 +47,9 @@ void *process_ui_queue_events(void*ptr){
       pcontext->list[counter] = (char*)NULL;
       pcontext->ip[counter]   = (char*)NULL;
 
+      pthread_mutex_unlock(pcontext->khash_mutex);
+      pthread_mutex_unlock(pcontext->list_mutex);
+
     }else{
       //something went wrong using the thread. Abort
       c = !c; //flip 
