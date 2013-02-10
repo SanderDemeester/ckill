@@ -10,6 +10,20 @@ static char*NAME="ckill |b087ec466c8101293bb9d934e37d7ab0|";
 void *ckill_ui(void*ptr){
   ncurses_data*win_struct = (ncurses_data*) malloc(sizeof(ncurses_data));
   pthread_context*pcontext = (pthread_context*)ptr;
+  char *choices[] = {
+    "Choice 1",
+    "Choice 2",
+    "Choice 3",
+    "Choice 4",
+    "Choice 5",
+    "Choice 6",
+    "Choice 7",
+    "Choice 8",
+    "Choice 9",
+    "Choice 10",
+    "Exit",
+    (char *)NULL,
+  };
   
   int width = 0;
   int height = 0;
@@ -19,8 +33,6 @@ void *ckill_ui(void*ptr){
   char* hostname = (char*) malloc(sizeof(char)*1024);
 
   pcontext->items = (ITEM**) calloc(NUMBER_OF_MENU_ENTRYS,sizeof(ITEM*));
-  for(int i = 0; i < NUMBER_OF_MENU_ENTRYS; i++)
-    pcontext->items[i] = (ITEM*) calloc(1,sizeof(ITEM));
   pcontext->items[0] = new_item(pcontext->list[0],pcontext->ip[0]);  
 
   //make menu
@@ -31,11 +43,11 @@ void *ckill_ui(void*ptr){
   pthread_mutex_lock(pcontext->ui_mutex);
   window_setup(win_struct);  //setup different window, now just stub.
 
-  wtimeout(win_struct->main_window,500); //non-blocking
+
 
   initscr(); //start ncurses
   cbreak(); //interperter control character as normal characters
-  noecho(); //disable printing characters typed
+  //  noecho(); //disable printing characters typed
 
   getmaxyx(stdscr,row,col); 
   height = 8; //height left and rightbox
@@ -84,6 +96,7 @@ void *ckill_ui(void*ptr){
   mvwprintw(win_struct->rightbox,4,1,"height: %d",height);
   
   //enable keypad on main_window  
+  wtimeout(win_struct->main_window,5); //non-blocking
   keypad(win_struct->main_window,TRUE);
   set_menu_back(pcontext->menu,COLOR_RED);
 
@@ -119,10 +132,41 @@ void *ckill_ui(void*ptr){
       menu_driver(pcontext->menu, REQ_SCR_UPAGE);
         break;
     }
-    
+
+    pthread_mutex_lock(pcontext->list_mutex);
     pthread_mutex_lock(pcontext->ui_mutex);
+
+    if(pcontext->new_data && pcontext->number_of_menu_elements > 0){
+      
+      printf("hier\n");
+      /* Start making updated menu */
+      for(int i = 0; i < pcontext->number_of_menu_elements; i++)
+	pcontext->items[i] = new_item(pcontext->list[i],
+				      pcontext->ip[i]);
+      pcontext->menu = new_menu((ITEM**)pcontext->items);
+      
+
+      set_menu_sub(pcontext->menu,derwin(win_struct->main_window,(row-height)-4,width,3,1));
+      set_menu_format(pcontext->menu,(row-height)-4,1);
+      set_menu_mark(pcontext->menu,"* ");
+      print_in_middle(win_struct,1,2,1,"Menu",COLOR_PAIR(1),col);
+      
+      mvwaddch(win_struct->main_window,2,0,ACS_LTEE);
+      mvwhline(win_struct->main_window,2,1,ACS_HLINE,col-2);
+      mvwaddch(win_struct->main_window,2,col-1,ACS_RTEE);
+      
+      post_menu(pcontext->menu);
+      pcontext->new_data = 0;
+      /* End making updated menu */
+    }
+    
+    /* Refresh main_window */
     wrefresh(win_struct->main_window);
+    
+    /* Release mutex */
     pthread_mutex_unlock(pcontext->ui_mutex);
+    pthread_mutex_unlock(pcontext->list_mutex);
+    
   }
   unpost_menu(pcontext->menu);
   endwin();

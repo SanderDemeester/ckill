@@ -31,13 +31,14 @@ void *process_ui_queue_events(void*ptr){
       /* Take list mutex */
       pthread_mutex_lock(pcontext->list_mutex);
       
+      /* Reset counter every time we re-run throug our hashmap */
       counter = 0;
 
       for(itr = kh_begin(flow_hashmap); itr != kh_end(flow_hashmap); ++itr){
 	if(kh_exist(flow_hashmap,itr)){
 	  f = kh_value(flow_hashmap,itr);
-	  pcontext->list[counter] = (char*)f->flow_id;
-	  pcontext->ip[counter]   = (char*)(f->iph->src_adr & 0x000000FF);
+	  pcontext->list[counter] = "ok\0";
+	  pcontext->ip[counter]   = "nok\0";
 	  counter++;
 	}
       }
@@ -46,7 +47,8 @@ void *process_ui_queue_events(void*ptr){
       /* 	our list with a (char*) NULL pointer */
       pcontext->list[counter] = (char*)NULL;
       pcontext->ip[counter]   = (char*)NULL;
-
+      pcontext->number_of_menu_elements = counter;
+      pcontext->new_data = 1;
       pthread_mutex_unlock(pcontext->khash_mutex);
       pthread_mutex_unlock(pcontext->list_mutex);
 

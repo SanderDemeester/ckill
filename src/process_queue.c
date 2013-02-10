@@ -46,7 +46,8 @@ void *process_queue(void*ptr){
 	  work_flowid ^= sp;
 	  work_flowid ^= dp;
 	  
-	  pthread_mutex_lock(pcontext->khash_mutex); //take mutex to use khash
+	  /* take mutex to use khash */
+	  pthread_mutex_lock(pcontext->khash_mutex); 
 	  
 	  //check if element exist in hashmap
 	  itr = kh_get(32,flow_hashmap,work_flowid);
@@ -60,12 +61,23 @@ void *process_queue(void*ptr){
 	    f->tcph = tcph;
 	    f->size = size;
 
+	    /* Take flow mutex */
 	    pthread_mutex_lock(pcontext->flows_mutex);
-	    pcontext->number_of_flows++; //increment number of flows
+	    
+	    /* increment number of flows */
+	    pcontext->number_of_flows++; 
+	    
+	    /* Unlock flow mutex */
 	    pthread_mutex_unlock(pcontext->flows_mutex);
-	    pthread_mutex_lock(pcontext->ui_mutex); //take mutex
-	    mvwprintw(pcontext->ncurses_window->leftbox,3,1,"number of flows: %d", pcontext->number_of_flows);
+	    
+	    /* Take UI-mutex */
+	    pthread_mutex_lock(pcontext->ui_mutex); 
+	    
+	    mvwprintw(pcontext->ncurses_window->leftbox,3,1,
+		      "number of flows: %d", pcontext->number_of_flows);
 	    wrefresh(pcontext->ncurses_window->leftbox);
+	    
+	    /* Relase UI-mutex */
 	    pthread_mutex_unlock(pcontext->ui_mutex);
 	    
 	    

@@ -111,6 +111,10 @@ typedef struct{
    pthread_mutex_t*khash_mutex;
 
    /* A mutex to control acces for char**list and char**ip */
+   /* Controls acces for : */
+   /*   - list */
+   /*   - ip */
+   /*   - number_of_menu_elements */
    pthread_mutex_t*list_mutex;
 
    /* A mutex to control acces for number_of_flows */
@@ -126,6 +130,15 @@ typedef struct{
    /* this number is equiv to number of menu entrys */
    int number_of_flows;
 
+   /* Number of taken elements in list && ip. */
+   /* The reason why we dont use number_of_flows is */
+   /* that it could happen that the thread process_queue changes  */
+   /* the number of flows while ui_screen thread is running throug the list. */
+   /* access is controld by list_mutex */
+   /* this is number includes the (char*)NULL-pointers */
+   int number_of_menu_elements;
+				   
+
    /* a pointer to our windows */
    ncurses_data*ncurses_window;
    
@@ -134,6 +147,9 @@ typedef struct{
    
    /* Menu */
    MENU*menu; 
+
+   /*TRUE is there is new data for menu*/
+   int new_data;
    
    char**list;
    char**ip;

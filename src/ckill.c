@@ -29,6 +29,9 @@ int main(int argc, char*argv[]){
 
   pcontext.list = (char**) calloc(NUMBER_OF_MENU_ENTRYS,sizeof(char*));
   pcontext.ip   = (char**) calloc(NUMBER_OF_MENU_ENTRYS,sizeof(char*));
+
+  pcontext.new_data = 0;
+  pcontext.number_of_menu_elements = 0;
   
   for(int i = 0; i < NUMBER_OF_MENU_ENTRYS; i++){
     pcontext.list[i] = (char*) calloc(LEN_MENU_STR,sizeof(char));
@@ -54,6 +57,8 @@ int main(int argc, char*argv[]){
   pthread_mutex_init(pcontext.mutex,NULL);
   pthread_mutex_init(pcontext.ui_mutex,NULL);
   pthread_mutex_init(pcontext.khash_mutex,NULL);
+  pthread_mutex_init(pcontext.list_mutex,NULL);
+  pthread_mutex_init(pcontext.flows_mutex,NULL);
   
   pthread_t *process_packet_engine = (pthread_t*) malloc(sizeof(pthread_t));
   pthread_t *process_queue_engine  = (pthread_t*) malloc(sizeof(pthread_t));
