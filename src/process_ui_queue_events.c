@@ -25,6 +25,28 @@ void *process_ui_queue_events(void*ptr){
     int r = sleep(2); //suspend execution for 2 seconds
     if(!r){
 
+      /* Take hashmap mutex */
+      pthread_mutex_lock(pcontext->khash_mutex);
+      
+      /* Take list mutex */
+      pthread_mutex_lock(pcontext->list_mutex);
+      
+      counter = 0;
+
+      for(itr = kh_begin(flow_hashmap); itr != kh_end(flow_hashmap); ++itr){
+	if(kh_exist(flow_hashmap,itr)){
+	  f = kh_value(flow_hashmap,itr);
+	  pcontext->list[counter] = (char*)f->flow_id;
+	  pcontext->ip[counter]   = (char*)(f->iph->src_adr & 0x000000FF);
+	  counter++;
+	}
+      }
+      
+      /* The counter will now be 1 to high, so we end  */
+      /* 	our list with a (char*) NULL pointer */
+      pcontext->list[counter] = (char*)NULL;
+      pcontext->ip[counter]   = (char*)NULL;
+
     }else{
       //something went wrong using the thread. Abort
       c = !c; //flip 

@@ -17,13 +17,11 @@ void *ckill_ui(void*ptr){
   int col = 0;
   int input = 0;
   char* hostname = (char*) malloc(sizeof(char)*1024);
-  char*list[] = {(char*)NULL};
-  char*ip[] = {(char*)NULL};
 
   pcontext->items = (ITEM**) calloc(NUMBER_OF_MENU_ENTRYS,sizeof(ITEM*));
   for(int i = 0; i < NUMBER_OF_MENU_ENTRYS; i++)
     pcontext->items[i] = (ITEM*) calloc(1,sizeof(ITEM));
-  pcontext->items[0] = new_item(list[0],ip[0]);  
+  pcontext->items[0] = new_item(pcontext->list[0],pcontext->ip[0]);  
 
   //make menu
   pcontext->menu = new_menu((ITEM**)pcontext->items);

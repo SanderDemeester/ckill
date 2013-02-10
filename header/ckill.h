@@ -25,6 +25,7 @@
 #endif
 #define N 100
 #define NUMBER_OF_MENU_ENTRYS 1023
+#define LEN_MENU_STR 300
 
 typedef struct{
   unsigned char version_ihl; //version
@@ -109,6 +110,13 @@ typedef struct{
    /* ui-events process and packet_engine processor */     
    pthread_mutex_t*khash_mutex;
 
+   /* A mutex to control acces for char**list and char**ip */
+   pthread_mutex_t*list_mutex;
+
+   /* A mutex to control acces for number_of_flows */
+   pthread_mutex_t*flows_mutex;
+    
+
    queue*q;
    int error;
    flow*connections;
@@ -127,8 +135,8 @@ typedef struct{
    /* Menu */
    MENU*menu; 
    
-   char*list[];
-   char*ip[];
+   char**list;
+   char**ip;
    int row;
    int height;
    int widht;

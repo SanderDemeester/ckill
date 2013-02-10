@@ -21,9 +21,23 @@ int main(int argc, char*argv[]){
   pcontext.mutex        = (pthread_mutex_t*)  malloc(sizeof(pthread_mutex_t));
   pcontext.ui_mutex     = (pthread_mutex_t*)  malloc(sizeof(pthread_mutex_t));
   pcontext.khash_mutex  = (pthread_mutex_t*)  malloc(sizeof(pthread_mutex_t));
+  pcontext.list_mutex   = (pthread_mutex_t*)  malloc(sizeof(pthread_mutex_t));
+  pcontext.flows_mutex  = (pthread_mutex_t*)  malloc(sizeof(pthread_mutex_t));
   pcontext.arg          = (pthread_arg*)      malloc(sizeof(pthread_arg));
   pcontext.error        = 0;
   pcontext.connections  = (flow*) malloc(sizeof(flow));
+
+  pcontext.list = (char**) calloc(NUMBER_OF_MENU_ENTRYS,sizeof(char*));
+  pcontext.ip   = (char**) calloc(NUMBER_OF_MENU_ENTRYS,sizeof(char*));
+  
+  for(int i = 0; i < NUMBER_OF_MENU_ENTRYS; i++){
+    pcontext.list[i] = (char*) calloc(LEN_MENU_STR,sizeof(char));
+    pcontext.ip[i]   = (char*) calloc(LEN_MENU_STR,sizeof(char));
+  }
+
+  pcontext.list[0] = (char*)NULL;
+  pcontext.ip[0]   = (char*)NULL;
+				  
 
   queue*q = (queue*) malloc(sizeof(queue));
   q->number_of_elements = 0;
