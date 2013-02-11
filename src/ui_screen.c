@@ -169,7 +169,7 @@ void print_in_middle(ncurses_data*w, int starty,int startx,int width,
   if(width == 0) width = 80;
   int d = c/7;
   //y,x
-  mvwprintw(w->main_window,1,2,"id",NULL);
+  mvwprintw(w->main_window,1,3,"id",NULL);
   mvwprintw(w->main_window,1,d-2,"dest ip",NULL);
   
   mvwprintw(w->main_window,1,2*d,"src ip",NULL);
