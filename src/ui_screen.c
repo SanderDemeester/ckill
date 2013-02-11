@@ -10,21 +10,7 @@ static char*NAME="ckill |b087ec466c8101293bb9d934e37d7ab0|";
 void *ckill_ui(void*ptr){
   ncurses_data*win_struct = (ncurses_data*) malloc(sizeof(ncurses_data));
   pthread_context*pcontext = (pthread_context*)ptr;
-  char *choices[] = {
-    "Choice 1",
-    "Choice 2",
-    "Choice 3",
-    "Choice 4",
-    "Choice 5",
-    "Choice 6",
-    "Choice 7",
-    "Choice 8",
-    "Choice 9",
-    "Choice 10",
-    "Exit",
-    (char *)NULL,
-  };
-  
+
   int width = 0;
   int height = 0;
   int row = 0;
