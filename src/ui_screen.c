@@ -137,8 +137,6 @@ void *ckill_ui(void*ptr){
     pthread_mutex_lock(pcontext->ui_mutex);
 
     if(pcontext->new_data && pcontext->number_of_menu_elements > 0){
-      
-      printf("hier\n");
       /* Start making updated menu */
       for(int i = 0; i < pcontext->number_of_menu_elements; i++)
 	pcontext->items[i] = new_item(pcontext->list[i],
