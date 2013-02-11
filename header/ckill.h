@@ -16,6 +16,7 @@
 #include <arpa/inet.h>
 #include <pthread.h>
 
+#include "config.h"
 #ifndef __AC_KHASH_H
 #include "khash.h"
 #endif
