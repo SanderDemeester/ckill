@@ -12,6 +12,7 @@ void *process_ui_queue_events(void*ptr){
   char*list_element = NULL; //we use this as a temp location for constructing to first element of ITEM.
   char*item_element = NULL; //we use this as a temp location for construction to the second element of ITEM.
   char*dummy = "IP";
+  char*test = (char*) calloc(100,sizeof(char));
   int number_of_spaces = 0;
 
   /* Take pointer to khash */
@@ -37,7 +38,9 @@ void *process_ui_queue_events(void*ptr){
       for(itr = kh_begin(flow_hashmap); itr != kh_end(flow_hashmap); ++itr){
 	if(kh_exist(flow_hashmap,itr)){
 	  f = kh_value(flow_hashmap,itr);
-	  pcontext->list[counter] = "ok\0";
+	  snprintf(test,100,"%d",f->flow_id);
+	  printf("%s \n",test);
+	  pcontext->list[counter] = "sander\0";
 	  pcontext->ip[counter]   = "nok\0";
 	  counter++;
 	}
