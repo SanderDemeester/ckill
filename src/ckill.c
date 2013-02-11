@@ -38,10 +38,6 @@ int main(int argc, char*argv[]){
     pcontext.ip[i]   = (char*) calloc(LEN_MENU_STR,sizeof(char));
   }
 
-  pcontext.list[0] = (char*)NULL;
-  pcontext.ip[0]   = (char*)NULL;
-				  
-
   queue*q = (queue*) malloc(sizeof(queue));
   q->number_of_elements = 0;
   q->list = (queue_element**) malloc(sizeof(queue_element*)*N);

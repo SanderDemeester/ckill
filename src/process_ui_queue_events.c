@@ -41,7 +41,6 @@ void *process_ui_queue_events(void*ptr){
 	  snprintf(test,100,"%u",(uint32_t)f->flow_id);
 	  //	  pcontext->list[counter] = test;
 	  memcpy(pcontext->list[counter],test,100);
-	  printf("%s \n", pcontext->list[counter]);
 	  strcpy(pcontext->ip[counter],"nok");
 	  counter++;
 	}
