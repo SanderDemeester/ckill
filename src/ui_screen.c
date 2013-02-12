@@ -87,7 +87,7 @@ void *ckill_ui(void*ptr){
   set_menu_back(pcontext->menu,COLOR_RED);
 
   set_menu_win(pcontext->menu,win_struct->main_window);
-  set_menu_sub(pcontext->menu,derwin(win_struct->main_window,(row-height)-4,width,3,1));
+  set_menu_sub(pcontext->menu,derwin(win_struct->main_window,(row-height)-4,width+10,3,1));
   set_menu_format(pcontext->menu,(row-height)-4,1);
   set_menu_mark(pcontext->menu,"* ");
 
@@ -133,6 +133,7 @@ void *ckill_ui(void*ptr){
       set_menu_sub(pcontext->menu,derwin(win_struct->main_window,(row-height)-4,width,3,1));
       set_menu_format(pcontext->menu,(row-height)-4,1);
       set_menu_mark(pcontext->menu,"* ");
+
       print_in_middle(win_struct,1,2,1,"Menu",COLOR_PAIR(1),col);
       
       mvwaddch(win_struct->main_window,2,0,ACS_LTEE);

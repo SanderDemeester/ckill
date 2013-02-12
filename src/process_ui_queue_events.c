@@ -11,9 +11,9 @@ void *process_ui_queue_events(void*ptr){
   int counter = 0;
   char*list_element = NULL; //we use this as a temp location for constructing to first element of ITEM.
   char*item_element = NULL; //we use this as a temp location for construction to the second element of ITEM.
-  char*dummy = "IP";
-  char*test = (char*) calloc(100,sizeof(char));
+  char dot = ".";
   int number_of_spaces = 0;
+
 
   /* Take pointer to khash */
   pthread_mutex_lock(pcontext->khash_mutex);
@@ -38,18 +38,34 @@ void *process_ui_queue_events(void*ptr){
       for(itr = kh_begin(flow_hashmap); itr != kh_end(flow_hashmap); ++itr){
 	if(kh_exist(flow_hashmap,itr)){
 	  f = kh_value(flow_hashmap,itr);
-	  snprintf(test,100,"%u",(uint32_t)f->flow_id);
-	  //	  pcontext->list[counter] = test;
-	  memcpy(pcontext->list[counter],test,100);
-	  strcpy(pcontext->ip[counter],"nok");
+	  snprintf(
+		   pcontext->list[counter],
+		   100,
+		   "%u",(uint32_t)f->flow_id);
+	  snprintf(pcontext->ip[counter],
+		   300,
+		   "%*s%d.%d.%d.%d %*s %d.%d.%d.%d|%d%*s",
+		   (pcontext->col/7)-(7+strlen(pcontext->list[counter])),
+		   " ",
+		   (uint32_t)(f->iph->src_adr & 0x000000FF),
+		   (uint32_t)(((f->iph->src_adr >> 8 ) & 0x000000FF)),
+		   (uint32_t)(((f->iph->src_adr >> 16) & 0x000000FF)),
+		   (uint32_t)(((f->iph->src_adr >> 24) & 0x000000FF)),
+		   10," ",
+		   (uint32_t)(f->iph->dst_adr & 0x000000FF),
+		   (uint32_t)(((f->iph->dst_adr >> 8 ) & 0x000000FF)),
+		   (uint32_t)(((f->iph->dst_adr >> 16) & 0x000000FF)),
+		   (uint32_t)(((f->iph->dst_adr >> 24) & 0x000000FF)),
+		   strlen(pcontext->list[counter]),
+		   80," "
+		   );
 	  counter++;
 	}
       }
-      
       /* The counter will now be 1 to high, so we end  */
       /* 	our list with a (char*) NULL pointer */
-      pcontext->list[counter] = (char*)NULL;
-      pcontext->ip[counter]   = (char*)NULL;
+      *pcontext->list[counter] = (char*)NULL;
+      *pcontext->ip[counter]   = (char*)NULL;
       pcontext->number_of_menu_elements = counter;
       pcontext->new_data = 1;
       pthread_mutex_unlock(pcontext->khash_mutex);

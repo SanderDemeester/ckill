@@ -34,8 +34,8 @@ int main(int argc, char*argv[]){
   pcontext.number_of_menu_elements = 0;
   
   for(int i = 0; i < NUMBER_OF_MENU_ENTRYS; i++){
-    pcontext.list[i] = (char*) calloc(LEN_MENU_STR,sizeof(char));
-    pcontext.ip[i]   = (char*) calloc(LEN_MENU_STR,sizeof(char));
+    pcontext.list[i] = (char*) malloc(LEN_MENU_STR*sizeof(char));
+    pcontext.ip[i]   = (char*) malloc(LEN_MENU_STR*sizeof(char));
   }
 
   queue*q = (queue*) malloc(sizeof(queue));
