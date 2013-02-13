@@ -63,7 +63,7 @@ void *process_ui_queue_events(void*ptr){
       }
       /* The counter will now be 1 to high, so we end  */
       /* 	our list with a (char*) NULL pointer */
-      qsort(pcontext->list,counter-1,LEN_MENU_STR,compare);
+      /* qsort(pcontext->list,counter-1,LEN_MENU_STR,compare); */
       *pcontext->list[counter] = (char*)NULL;
       *pcontext->ip[counter]   = (char*)NULL;
       pcontext->number_of_menu_elements = counter;
