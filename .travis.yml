@@ -4,4 +4,5 @@ compiler:
 # Change this to your needs
 script: ./configure && make
 branches:
-	travis
+	only:
+	- travis
