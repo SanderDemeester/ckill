@@ -57,8 +57,13 @@ void *process_queue(void*ptr){
 	    flow*f = (flow*) malloc(sizeof(flow));
 	    int r = 0;
 	    f->flow_id = work_flowid;
-	    f->iph = iph;
-	    f->tcph = tcph;
+
+	    f->iph = (ip_header*) malloc(sizeof(ip_header));
+	    memcpy((void*)f->iph, (void*)iph, sizeof(ip_header));
+
+	    f->tcph = (tcp_header*) malloc(sizeof(tcp_header));
+	    memcpy((void*)f->tcph, (void*)tcph, sizeof(ip_header));
+
 	    f->size = size;
 
 	    /* Take flow mutex */
@@ -87,8 +92,10 @@ void *process_queue(void*ptr){
 	    //update existing flow
 	    flow*f = kh_value(flow_hashmap,itr);
 	    int r;
-	    f->iph = iph;
-	    f->tcph = tcph;
+
+	    memcpy((void*)f->iph,  (void*)iph, sizeof(ip_header));
+	    memcpy((void*)f->tcph, (void*)tcph, sizeof(tcp_header));
+
 	    f->size+=size;
 	    kh_put(32,flow_hashmap,work_flowid,&r);
 	  }	    
