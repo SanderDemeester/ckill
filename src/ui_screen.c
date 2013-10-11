@@ -17,7 +17,7 @@ void *ckill_ui(void*ptr){
   int col = 0;
   int input = 0;
   char* hostname = (char*) malloc(sizeof(char)*1024);
-  ITEM*cur = NULL; // Current selected item.
+  ITEM*cur = NULL;
 
   pcontext->items = (ITEM**) calloc(NUMBER_OF_MENU_ENTRYS,sizeof(ITEM*));
   pcontext->items[0] = new_item((char*)NULL,(char*)NULL);
@@ -124,7 +124,8 @@ void *ckill_ui(void*ptr){
     pthread_mutex_lock(pcontext->ui_mutex);
 
     if(pcontext->new_data && pcontext->number_of_menu_elements > 0){
-      cur = current_item(win_struct->menu);
+      cur = current_item(pcontext->menu);
+      short index = item_index(current_item(pcontext->menu));
       /* Start making updated menu */
       for(int i = 0; i < pcontext->number_of_menu_elements; i++)
 	pcontext->items[i] = new_item(pcontext->list[i],
@@ -140,15 +141,16 @@ void *ckill_ui(void*ptr){
       mvwaddch(win_struct->main_window,2,0,ACS_LTEE);
       mvwhline(win_struct->main_window,2,1,ACS_HLINE,col-2);
       mvwaddch(win_struct->main_window,2,col-1,ACS_RTEE);
-      
-      post_menu(pcontext->menu);
-      pcontext->new_data = 0;
+
+      if(index > 1)
+	set_current_item(pcontext->menu, pcontext->items[index]);
+
+      post_menu(pcontext->menu);      
+      pcontext->new_data = 0;      
       /* End making updated menu */
     }
-    
     /* Refresh main_window */
     wrefresh(win_struct->main_window);
-
     
     /* Release mutex */
     pthread_mutex_unlock(pcontext->ui_mutex);
