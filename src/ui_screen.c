@@ -17,7 +17,6 @@ void *ckill_ui(void*ptr){
   int col = 0;
   int input = 0;
   char* hostname = (char*) malloc(sizeof(char)*1024);
-  ITEM*cur = NULL;
 
   pcontext->items = (ITEM**) calloc(NUMBER_OF_MENU_ENTRYS,sizeof(ITEM*));
   pcontext->items[0] = new_item((char*)NULL,(char*)NULL);
@@ -124,7 +123,6 @@ void *ckill_ui(void*ptr){
     pthread_mutex_lock(pcontext->ui_mutex);
 
     if(pcontext->new_data && pcontext->number_of_menu_elements > 0){
-      cur = current_item(pcontext->menu);
       short index = item_index(current_item(pcontext->menu));
       /* Start making updated menu */
       for(int i = 0; i < pcontext->number_of_menu_elements; i++)
