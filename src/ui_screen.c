@@ -140,7 +140,7 @@ void *ckill_ui(void*ptr){
       mvwhline(win_struct->main_window,2,1,ACS_HLINE,col-2);
       mvwaddch(win_struct->main_window,2,col-1,ACS_RTEE);
 
-      if(index > 1)
+      if(index > 0)
 	set_current_item(pcontext->menu, pcontext->items[index]);
 
       post_menu(pcontext->menu);      
