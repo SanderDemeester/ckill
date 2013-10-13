@@ -36,6 +36,7 @@ void *process_ui_queue_events(void*ptr){
       for(itr = kh_begin(flow_hashmap); itr != kh_end(flow_hashmap); ++itr){
 	if(kh_exist(flow_hashmap,itr)){
 	  f = kh_value(flow_hashmap,itr);
+	  
 	  snprintf(
 		   pcontext->list[counter],
 		   100,
