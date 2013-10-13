@@ -97,6 +97,11 @@ typedef struct{
 }queue;
 
 typedef struct{
+  char*flow_id_label;
+  char*flow_info_label;
+}label_item;
+
+typedef struct{
    pthread_cond_t*conditie;
 
    /* Mutex to control acces between  */
@@ -151,9 +156,7 @@ typedef struct{
 
    /*TRUE is there is new data for menu*/
    int new_data;
-   
-   char**list;
-   char**ip;
+
    int row;
    int height;
    int widht;

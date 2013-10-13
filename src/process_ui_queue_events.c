@@ -14,7 +14,7 @@ void *process_ui_queue_events(void*ptr){
   khiter_t itr; //Iterator for khash
   flow*f; // A temp location for the flow
   int counter = 0;
-
+  
   /* Take pointer to khash */
   pthread_mutex_lock(pcontext->khash_mutex);
   khash_t(32)*flow_hashmap = pcontext->arg->flow_hashmap;
@@ -37,15 +37,24 @@ void *process_ui_queue_events(void*ptr){
 	if(kh_exist(flow_hashmap,itr)){
 	  f = kh_value(flow_hashmap,itr);
 	  
+	  pcontext->items[counter] = (ITEM*) malloc(sizeof(ITEM));
+	  label_item*l_item = (label_item*) malloc(sizeof(label_item));
+
+	  l_item->flow_id_label = (char*) malloc(sizeof(char)*100);
+	  l_item->flow_info_label = (char*) malloc(sizeof(char)*300);
+
+	  
+	  
 	  snprintf(
-		   pcontext->list[counter],
+		   l_item->flow_id_label,
 		   100,
 		   "%u",(uint32_t)f->flow_id);
 
-	  snprintf(pcontext->ip[counter],
+	  snprintf(
+		   l_item->flow_info_label,
 		   300,
 		   "%*s%d.%d.%d.%d %*s %d.%d.%d.%d|%d|size:%d%*s",
-		   ((int)pcontext->col/7)-(7+(int)strlen(pcontext->list[counter])),
+		   ((int)pcontext->col/7)-(7+(int)10),
 		   " ",
 		   (uint32_t)(f->iph->src_adr & 0x000000FF),
 		   (uint32_t)(((f->iph->src_adr >> 8 ) & 0x000000FF)),
@@ -56,18 +65,19 @@ void *process_ui_queue_events(void*ptr){
 		   (uint32_t)(((f->iph->dst_adr >> 8 ) & 0x000000FF)),
 		   (uint32_t)(((f->iph->dst_adr >> 16) & 0x000000FF)),
 		   (uint32_t)(((f->iph->dst_adr >> 24) & 0x000000FF)),
-		   (uint32_t)strlen(pcontext->list[counter]),
+		   (uint32_t)10,
 		   (int)f->size,
 		   80," "
 		   );
+	  pcontext->items[counter] = new_item(l_item->flow_id_label,
+					      l_item->flow_info_label);
+	  set_item_userptr (pcontext->items[counter], (void*)l_item);
 	  counter++;
 	}
       }
       /* The counter will now be 1 to high, so we end  */
       /* 	our list with a (char*) NULL pointer */
       /* qsort(pcontext->list,counter-1,LEN_MENU_STR,compare); */
-      *pcontext->list[counter] = (char*)NULL;
-      *pcontext->ip[counter]   = (char*)NULL;
       pcontext->number_of_menu_elements = counter;
       pcontext->new_data = 1;
       pthread_mutex_unlock(pcontext->khash_mutex);

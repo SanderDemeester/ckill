@@ -27,20 +27,14 @@ int main(int argc, char*argv[]){
   pcontext.error        = 0;
   pcontext.connections  = (flow*) malloc(sizeof(flow));
 
-  pcontext.list = (char**) calloc(NUMBER_OF_MENU_ENTRYS,sizeof(char*));
-  pcontext.ip   = (char**) calloc(NUMBER_OF_MENU_ENTRYS,sizeof(char*));
-
   pcontext.new_data = 0;
   pcontext.number_of_menu_elements = 0;
   
-  for(int i = 0; i < NUMBER_OF_MENU_ENTRYS; i++){
-    pcontext.list[i] = (char*) malloc(LEN_MENU_STR*sizeof(char));
-    pcontext.ip[i]   = (char*) malloc(LEN_MENU_STR*sizeof(char));
-  }
 
   queue*q = (queue*) malloc(sizeof(queue));
   q->number_of_elements = 0;
   q->list = (queue_element**) malloc(sizeof(queue_element*)*N);
+
   for(int i = 0; i < N; i++)
     q->list[i] = (queue_element*) malloc(sizeof(queue_element));
   
