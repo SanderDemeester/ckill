@@ -40,10 +40,11 @@ void *process_ui_queue_events(void*ptr){
 		   pcontext->list[counter],
 		   100,
 		   "%u",(uint32_t)f->flow_id);
+
 	  snprintf(pcontext->ip[counter],
 		   300,
 		   "%*s%d.%d.%d.%d %*s %d.%d.%d.%d|%d|size:%d%*s",
-		   (pcontext->col/7)-(7+strlen(pcontext->list[counter])),
+		   ((int)pcontext->col/7)-(7+(int)strlen(pcontext->list[counter])),
 		   " ",
 		   (uint32_t)(f->iph->src_adr & 0x000000FF),
 		   (uint32_t)(((f->iph->src_adr >> 8 ) & 0x000000FF)),
@@ -54,8 +55,8 @@ void *process_ui_queue_events(void*ptr){
 		   (uint32_t)(((f->iph->dst_adr >> 8 ) & 0x000000FF)),
 		   (uint32_t)(((f->iph->dst_adr >> 16) & 0x000000FF)),
 		   (uint32_t)(((f->iph->dst_adr >> 24) & 0x000000FF)),
-		   strlen(pcontext->list[counter]),
-		   f->size,
+		   (uint32_t)strlen(pcontext->list[counter]),
+		   (int)f->size,
 		   80," "
 		   );
 	  counter++;
