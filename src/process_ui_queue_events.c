@@ -51,8 +51,6 @@ void *process_ui_queue_events(void*ptr){
 	  f = kh_value(flow_hashmap,itr);
 	  
 	  l_item = (label_item*) malloc(sizeof(label_item));
-	  l_item_c = (label_item*) malloc(sizeof(label_item));
-
 	  l_item->flow_id_label = (char*) malloc(sizeof(char)*100);
 	  l_item->flow_info_label = (char*) malloc(sizeof(char)*300);
 	  
@@ -85,9 +83,10 @@ void *process_ui_queue_events(void*ptr){
 	  for(int i = 0; i < pcontext->number_of_menu_elements; i++){
 	    l_item_c = item_userptr(pcontext->items[i]);
 	    if(!strcmp(l_item->flow_id_label, l_item_c->flow_id_label)){
-	      // match
-	      // change text value.
-	      free(l_item_c);
+	      /*
+		Match.
+		Change our text value.
+	       */
 	      ITEM*item_t = pcontext->items[i];
 
 	      strncpy(item_t->name.str, l_item->flow_id_label, sizeof(l_item->flow_id_label));
@@ -104,6 +103,8 @@ void *process_ui_queue_events(void*ptr){
 	    pcontext->items[counter] = new_item(l_item->flow_id_label,
 						l_item->flow_info_label);
 	  }
+	  //Free our temp variable
+	  free(l_item_c);
 	  
 	  set_item_userptr (pcontext->items[counter], (void*)l_item);
 	  found_flag = 0;
