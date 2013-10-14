@@ -14,7 +14,10 @@ int main(int argc, char*argv[]){
     printf("U root?\n");
     exit(-1);
   }
-
+ 
+#ifdef _DEBUG
+  setlogmask(LOG_DEBUG);
+#endif
 
   volatile pthread_context pcontext;
   pcontext.conditie     = (pthread_cond_t*)   malloc(sizeof(pthread_cond_t));

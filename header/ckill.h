@@ -15,6 +15,7 @@
 #include <net/if.h>
 #include <arpa/inet.h>
 #include <pthread.h>
+#include "syslog.h"
 
 #include "config.h"
 #ifndef __AC_KHASH_H
