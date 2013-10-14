@@ -122,5 +122,9 @@ void *process_ui_queue_events(void*ptr){
       //something went wrong using the thread. Abort
       c = !c; //flip 
     }
-  }  
+  }
+  // Free all user pointers
+  for(int i = 0; i < pcontext->number_of_menu_elements; i++){
+    free(item_userptr(pcontext->items[i]));
+  }
 }
