@@ -97,16 +97,24 @@ void *process_ui_queue_events(void*ptr){
 		   );
 
 	  for(int i = 0; i < pcontext->number_of_menu_elements; i++){
-	    l_item_c = item_userptr(pcontext->items[i]);
-	    if(!strcmp(l_item->flow_id_label, l_item_c->flow_id_label)){
+	    // Hold the userpointer.
+	    l_item_c = (label_item*)item_userptr(pcontext->items[i]);
+#ifdef _DEBUG
+	    if(l_item_c == NULL)
+	      syslog(LOG_INFO,"->%p",l_item_c);
+#endif
+	    // It should NOT happen that l_item_c == NULL.
+	    if(l_item_c != NULL && !strcmp(l_item->flow_id_label, l_item_c->flow_id_label)){
 	      /*
-		Match.
-		Change our text value.
+		If we find a match -> we have the index in our
+		items array to update our label.
 	       */
-	      ITEM*item_t = pcontext->items[i];
-
-	      strncpy(item_t->name.str, l_item->flow_id_label, sizeof(l_item->flow_id_label));
-	      item_t->name.length = sizeof(l_item->flow_id_label);
+	      #ifdef _DEBUG
+	      syslog(LOG_INFO,"%s","match");
+	      #endif
+	      
+	      // Update the user pointer.
+	      set_item_userptr(pcontext->items[i],(void*)l_item);
 
 	      found_flag = 1;
 	      break;
@@ -115,16 +123,18 @@ void *process_ui_queue_events(void*ptr){
 	  
 	  // If not found any exiting item, make a new one.
 	  if(!found_flag){
-	    int offset = pcontext->number_of_menu_elements+(++number_of_new_items);
+	    int offset = pcontext->number_of_menu_elements+(number_of_new_items++);
+#ifdef _DEBUG
+	    syslog(LOG_INFO,"%s:%d","new flow with offset",offset);
+#endif
+
 	    pcontext->items[offset] = (ITEM*) malloc(sizeof(ITEM));	  
 	    pcontext->items[offset] = new_item(l_item->flow_id_label,
 					       l_item->flow_info_label);
+	    set_item_userptr (pcontext->items[offset], (void*)l_item);  
 	  }
+
 	  //Free our temp variable
-	  free(l_item_c);
-	  
-	  // Update our user pointer.
-	  set_item_userptr (pcontext->items[counter], (void*)l_item);
 	  found_flag = 0;
 	  counter++;
 	}
@@ -132,7 +142,7 @@ void *process_ui_queue_events(void*ptr){
       /* The counter will now be 1 to high, so we end  */
       /* 	our list with a (char*) NULL pointer */
       /* qsort(pcontext->list,counter-1,LEN_MENU_STR,compare); */
-      pcontext->number_of_menu_elements = counter;
+      pcontext->number_of_menu_elements = counter-1;
       pcontext->new_data = 1;
       pthread_mutex_unlock(pcontext->khash_mutex);
       pthread_mutex_unlock(pcontext->list_mutex);
@@ -146,4 +156,8 @@ void *process_ui_queue_events(void*ptr){
   for(int i = 0; i < pcontext->number_of_menu_elements; i++){
     free(item_userptr(pcontext->items[i]));
   }
+
+  #ifdef _DEBUG
+  closelog();
+  #endif
 }

@@ -19,7 +19,7 @@ void *ckill_ui(void*ptr){
   char* hostname = (char*) malloc(sizeof(char)*1024);
 
   pcontext->items = (ITEM**) calloc(NUMBER_OF_MENU_ENTRYS,sizeof(ITEM*));
-  pcontext->items[0] = new_item((char*)NULL,(char*)NULL);
+  //pcontext->items[0] = new_item((char*)NULL,(char*)NULL);
 
   //make menu
   pcontext->menu = new_menu((ITEM**)pcontext->items);

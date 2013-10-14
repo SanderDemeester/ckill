@@ -16,7 +16,7 @@ int main(int argc, char*argv[]){
   }
  
 #ifdef _DEBUG
-  setlogmask(LOG_DEBUG);
+  openlog("ckill",0,LOG_USER);
 #endif
 
   volatile pthread_context pcontext;

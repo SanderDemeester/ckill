@@ -6,8 +6,7 @@ BIN=ckill
 
 all:	ckill
 debug:  CC += -g
-debug:
-	CC += -D _DEBUG
+debug:	CC += -D _DEBUG
 debug:  ckill
 
 ckill: $(obj)
