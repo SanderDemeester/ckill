@@ -1,47 +1,56 @@
-==15021== Memcheck, a memory error detector
-==15021== Copyright (C) 2002-2011, and GNU GPL'd, by Julian Seward et al.
-==15021== Using Valgrind-3.7.0 and LibVEX; rerun with -h for copyright info
-==15021== Command: ./ckill
-==15021== 
-==15021== Thread 3:
-==15021== Syscall param socketcall.setsockopt(optval) points to uninitialised byte(s)
-==15021==    at 0x5793F0A: setsockopt (syscall-template.S:82)
-==15021==    by 0x401E3A: process_incoming_packets (process_incoming_packet.c:21)
-==15021==    by 0x5489E99: start_thread (pthread_create.c:308)
-==15021==  Address 0x5c659b0 is 16 bytes inside a block of size 40 alloc'd
-==15021==    at 0x4C2B6CD: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-==15021==    by 0x401D9A: process_incoming_packets (process_incoming_packet.c:12)
-==15021==    by 0x5489E99: start_thread (pthread_create.c:308)
-==15021== 
-==15021== Thread 5:
-==15021== Invalid read of size 8
-==15021==    at 0x40330B: process_ui_queue_events (process_ui_queue_events.c:106)
-==15021==    by 0x5489E99: start_thread (pthread_create.c:308)
-==15021==  Address 0x0 is not stack'd, malloc'd or (recently) free'd
-==15021== 
-==15021== 
-==15021== Process terminating with default action of signal 11 (SIGSEGV)
-==15021==  Access not within mapped region at address 0x0
-==15021==    at 0x40330B: process_ui_queue_events (process_ui_queue_events.c:106)
-==15021==    by 0x5489E99: start_thread (pthread_create.c:308)
-==15021==  If you believe this happened as a result of a stack
-==15021==  overflow in your program's main thread (unlikely but
-==15021==  possible), you can try to increase the size of the
-==15021==  main thread stack using the --main-stacksize= flag.
-==15021==  The main thread stack size used in this run was 8388608.
-==15021== 
-==15021== HEAP SUMMARY:
-==15021==     in use at exit: 499,104 bytes in 2,101 blocks
-==15021==   total heap usage: 3,544 allocs, 1,443 frees, 798,671 bytes allocated
-==15021== 
-==15021== LEAK SUMMARY:
-==15021==    definitely lost: 6,979 bytes in 1,413 blocks
-==15021==    indirectly lost: 17 bytes in 3 blocks
-==15021==      possibly lost: 1,088 bytes in 4 blocks
-==15021==    still reachable: 491,020 bytes in 681 blocks
-==15021==         suppressed: 0 bytes in 0 blocks
-==15021== Rerun with --leak-check=full to see details of leaked memory
-==15021== 
-==15021== For counts of detected and suppressed errors, rerun with: -v
-==15021== Use --track-origins=yes to see where uninitialised values come from
-==15021== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 2 from 2)
+==17370== Memcheck, a memory error detector
+==17370== Copyright (C) 2002-2011, and GNU GPL'd, by Julian Seward et al.
+==17370== Using Valgrind-3.7.0 and LibVEX; rerun with -h for copyright info
+==17370== Command: ./ckill
+==17370== 
+==17370== Thread 3:
+==17370== Syscall param socketcall.setsockopt(optval) points to uninitialised byte(s)
+==17370==    at 0x5793F0A: setsockopt (syscall-template.S:82)
+==17370==    by 0x401D46: process_incoming_packets (process_incoming_packet.c:21)
+==17370==    by 0x5489E99: start_thread (pthread_create.c:308)
+==17370==  Address 0x5cd62d0 is 16 bytes inside a block of size 40 alloc'd
+==17370==    at 0x4C2B6CD: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==17370==    by 0x401CA6: process_incoming_packets (process_incoming_packet.c:12)
+==17370==    by 0x5489E99: start_thread (pthread_create.c:308)
+==17370== 
+==17370== Thread 5:
+==17370== Invalid write of size 8
+==17370==    at 0x403291: process_ui_queue_events (process_ui_queue_events.c:131)
+==17370==    by 0x5489E99: start_thread (pthread_create.c:308)
+==17370==  Address 0x5c65f48 is 8 bytes before a block of size 8,184 alloc'd
+==17370==    at 0x4C29DB4: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==17370==    by 0x403416: ckill_ui (ui_screen.c:21)
+==17370==    by 0x5489E99: start_thread (pthread_create.c:308)
+==17370== 
+==17370== Invalid write of size 8
+==17370==    at 0x4032C4: process_ui_queue_events (process_ui_queue_events.c:132)
+==17370==    by 0x5489E99: start_thread (pthread_create.c:308)
+==17370==  Address 0x5c65f48 is 8 bytes before a block of size 8,184 alloc'd
+==17370==    at 0x4C29DB4: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==17370==    by 0x403416: ckill_ui (ui_screen.c:21)
+==17370==    by 0x5489E99: start_thread (pthread_create.c:308)
+==17370== 
+==17370== Invalid read of size 8
+==17370==    at 0x4032DC: process_ui_queue_events (process_ui_queue_events.c:134)
+==17370==    by 0x5489E99: start_thread (pthread_create.c:308)
+==17370==  Address 0x5c65f48 is 8 bytes before a block of size 8,184 alloc'd
+==17370==    at 0x4C29DB4: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==17370==    by 0x403416: ckill_ui (ui_screen.c:21)
+==17370==    by 0x5489E99: start_thread (pthread_create.c:308)
+==17370== 
+==17370== 
+==17370== HEAP SUMMARY:
+==17370==     in use at exit: 611,820 bytes in 1,176 blocks
+==17370==   total heap usage: 1,217 allocs, 41 frees, 618,762 bytes allocated
+==17370== 
+==17370== LEAK SUMMARY:
+==17370==    definitely lost: 6,360 bytes in 166 blocks
+==17370==    indirectly lost: 43,862 bytes in 258 blocks
+==17370==      possibly lost: 1,088 bytes in 4 blocks
+==17370==    still reachable: 560,510 bytes in 748 blocks
+==17370==         suppressed: 0 bytes in 0 blocks
+==17370== Rerun with --leak-check=full to see details of leaked memory
+==17370== 
+==17370== For counts of detected and suppressed errors, rerun with: -v
+==17370== Use --track-origins=yes to see where uninitialised values come from
+==17370== ERROR SUMMARY: 4 errors from 4 contexts (suppressed: 2 from 2)

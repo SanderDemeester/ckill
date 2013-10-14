@@ -139,11 +139,12 @@ void *process_ui_queue_events(void*ptr){
 	  counter++;
 	}
       }
+
       /* The counter will now be 1 to high, so we end  */
       /* 	our list with a (char*) NULL pointer */
-      /* qsort(pcontext->list,counter-1,LEN_MENU_STR,compare); */
       pcontext->number_of_menu_elements = counter-1;
       pcontext->new_data = 1;
+      number_of_new_items = 0;
       pthread_mutex_unlock(pcontext->khash_mutex);
       pthread_mutex_unlock(pcontext->list_mutex);
       
