@@ -14,6 +14,9 @@ void *process_ui_queue_events(void*ptr){
   //Control variabel for while loop.
   int c = 1; 
 
+  // Number of new flows each iteration
+  int new_flows = 0;
+
   //Iterator for khash
   khiter_t itr; 
 
@@ -113,6 +116,7 @@ void *process_ui_queue_events(void*ptr){
 	      // Update the label.
 	      pcontext->label_list[i] = l_item;
 
+	      // We found a match, so dont make a new label.
 	      found_flag = 1;
 	      break;
 	    }
@@ -120,10 +124,14 @@ void *process_ui_queue_events(void*ptr){
 	  
 	  // If not found any existing label -> make a new one.
 	  if(!found_flag){
-	    l_item->weight = pcontext->number_of_menu_elements+counter;
+#ifdef _DEBUG
+	    syslog(LOG_INFO, "create new label. New flows: %d, menu elements: %d",counter,new_flows);
+#endif	   
+	    l_item->weight = pcontext->number_of_menu_elements+new_flows;
 	    pcontext->label_list = (label_item**) realloc(pcontext->label_list, 
-							  sizeof(label_item*)*(pcontext->number_of_menu_elements+counter)+1);
-	    pcontext->label_list[pcontext->number_of_menu_elements+counter] = l_item;
+							  sizeof(label_item*)*(pcontext->number_of_menu_elements+new_flows+1));
+	    pcontext->label_list[pcontext->number_of_menu_elements+new_flows] = l_item;
+	    new_flows++;
 	  }
 
 	  //Free our temp variable
@@ -134,8 +142,17 @@ void *process_ui_queue_events(void*ptr){
 
       /* The counter will now be 1 to high, so we end  */
       /* 	our list with a (char*) NULL pointer */
+#ifdef _DEBUG
+      syslog(LOG_INFO, "set number of elements: %d", counter-1);
+#endif
       pcontext->number_of_menu_elements = counter-1;
+      // There is new data
       pcontext->new_data = 1;
+      
+      // Reset new flow counter.
+      new_flows = 0;
+
+      // Release mutex.
       pthread_mutex_unlock(pcontext->khash_mutex);
       pthread_mutex_unlock(pcontext->list_mutex);
       
