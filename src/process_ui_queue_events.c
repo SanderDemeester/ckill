@@ -109,9 +109,9 @@ void *process_ui_queue_events(void*ptr){
 		If we find a match -> we have the index in our
 		label array to update our label.
 	       */
-	      #ifdef _DEBUG
+#ifdef _DEBUG
 	      syslog(LOG_INFO,"%s","match");
-	      #endif
+#endif
 	      
 	      // Update the label.
 	      pcontext->label_list[i] = l_item;
@@ -123,8 +123,9 @@ void *process_ui_queue_events(void*ptr){
 	  
 	  // If not found any existing label -> make a new one.
 	  if(!found_flag){
+	    l_item->weight = pcontext->number_of_menu_elements+counter
 	    pcontext->label_list = (label_item**) realloc(pcontext->label_list, 
-							  sizeof(label_item*)*pcontext->number_of_menu_elements+1);
+							  sizeof(label_item*)*(pcontext->number_of_menu_elements+counter)+1);
 	    pcontext->label_list[pcontext->number_of_menu_elements] = l_item;
 	  }
 
