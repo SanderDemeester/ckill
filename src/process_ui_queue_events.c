@@ -123,7 +123,7 @@ void *process_ui_queue_events(void*ptr){
 	  
 	  // If not found any existing label -> make a new one.
 	  if(!found_flag){
-	    l_item->weight = pcontext->number_of_menu_elements+counter
+	    l_item->weight = pcontext->number_of_menu_elements+counter;
 	    pcontext->label_list = (label_item**) realloc(pcontext->label_list, 
 							  sizeof(label_item*)*(pcontext->number_of_menu_elements+counter)+1);
 	    pcontext->label_list[pcontext->number_of_menu_elements] = l_item;
