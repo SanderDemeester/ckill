@@ -120,14 +120,14 @@ typedef struct{
 
    /* A mutex to control acces for label list */
    /* Controls acces for : */
-   /*   - label_list
+   /*   - label_list */
    /*   - number_of_menu_elements */
+
    pthread_mutex_t*list_mutex;
 
    /* A mutex to control acces for number_of_flows */
    pthread_mutex_t*flows_mutex;
     
-
    queue*q;
    int error;
    flow*connections;
