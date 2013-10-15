@@ -33,7 +33,7 @@ int main(int argc, char*argv[]){
   pcontext.new_data = 0;
   pcontext.number_of_menu_elements = 0;
   
-
+  pcontext.label_list = (label_item**) malloc(sizeof(label_item*));
   queue*q = (queue*) malloc(sizeof(queue));
   q->number_of_elements = 0;
   q->list = (queue_element**) malloc(sizeof(queue_element*)*N);

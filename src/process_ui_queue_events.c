@@ -98,7 +98,7 @@ void *process_ui_queue_events(void*ptr){
 
 	  for(int i = 0; i < pcontext->number_of_menu_elements; i++){
 	    // Hold the userpointer.
-	    l_item_c = (label_item*)item_userptr(pcontext->items[i]);
+	    l_item_c = pcontext->label_list[i];
 #ifdef _DEBUG
 	    if(l_item_c == NULL)
 	      syslog(LOG_INFO,"->%p",l_item_c);
@@ -107,31 +107,25 @@ void *process_ui_queue_events(void*ptr){
 	    if(l_item_c != NULL && !strcmp(l_item->flow_id_label, l_item_c->flow_id_label)){
 	      /*
 		If we find a match -> we have the index in our
-		items array to update our label.
+		label array to update our label.
 	       */
 	      #ifdef _DEBUG
 	      syslog(LOG_INFO,"%s","match");
 	      #endif
 	      
-	      // Update the user pointer.
-	      set_item_userptr(pcontext->items[i],(void*)l_item);
+	      // Update the label.
+	      pcontext->label_list[i] = l_item;
 
 	      found_flag = 1;
 	      break;
 	    }
 	  }
 	  
-	  // If not found any exiting item, make a new one.
+	  // If not found any existing label -> make a new one.
 	  if(!found_flag){
-	    int offset = pcontext->number_of_menu_elements+(number_of_new_items++);
-#ifdef _DEBUG
-	    syslog(LOG_INFO,"%s:%d","new flow with offset",offset);
-#endif
-
-	    pcontext->items[offset] = (ITEM*) malloc(sizeof(ITEM));	  
-	    pcontext->items[offset] = new_item(l_item->flow_id_label,
-					       l_item->flow_info_label);
-	    set_item_userptr (pcontext->items[offset], (void*)l_item);  
+	    pcontext->label_list = (label_item**) realloc(pcontext->label_list, 
+							  sizeof(label_item*)*pcontext->number_of_menu_elements+1);
+	    pcontext->label_list[pcontext->number_of_menu_elements] = l_item;
 	  }
 
 	  //Free our temp variable
