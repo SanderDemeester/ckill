@@ -136,7 +136,6 @@ void *process_ui_queue_events(void*ptr){
       /* 	our list with a (char*) NULL pointer */
       pcontext->number_of_menu_elements = counter-1;
       pcontext->new_data = 1;
-      number_of_new_items = 0;
       pthread_mutex_unlock(pcontext->khash_mutex);
       pthread_mutex_unlock(pcontext->list_mutex);
       
@@ -148,4 +147,5 @@ void *process_ui_queue_events(void*ptr){
   #ifdef _DEBUG
   closelog();
   #endif
+  return 0;
 }
