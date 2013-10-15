@@ -148,11 +148,6 @@ void *process_ui_queue_events(void*ptr){
       c = !c; //flip 
     }
   }
-  // Free all user pointers
-  for(int i = 0; i < pcontext->number_of_menu_elements; i++){
-    free(item_userptr(pcontext->items[i]));
-  }
-
   #ifdef _DEBUG
   closelog();
   #endif
