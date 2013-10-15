@@ -98,6 +98,7 @@ typedef struct{
 }queue;
 
 typedef struct{
+  int weight; // Will identify the pos of the item
   char*flow_id_label;
   char*flow_info_label;
 }label_item;
@@ -117,10 +118,9 @@ typedef struct{
    /* ui-events process and packet_engine processor */     
    pthread_mutex_t*khash_mutex;
 
-   /* A mutex to control acces for char**list and char**ip */
+   /* A mutex to control acces for label list */
    /* Controls acces for : */
-   /*   - list */
-   /*   - ip */
+   /*   - label_list
    /*   - number_of_menu_elements */
    pthread_mutex_t*list_mutex;
 
@@ -137,7 +137,7 @@ typedef struct{
    /* this number is equiv to number of menu entrys */
    int number_of_flows;
 
-   /* Number of taken elements in list && ip. */
+   /* Number of taken elements in label list */
    /* The reason why we dont use number_of_flows is */
    /* that it could happen that the thread process_queue changes  */
    /* the number of flows while ui_screen thread is running throug the list. */
@@ -145,7 +145,8 @@ typedef struct{
    /* this is number includes the (char*)NULL-pointers */
    int number_of_menu_elements;
 				   
-
+   /*List of labels*/
+   label_item**label_list = NULL;
    /* a pointer to our windows */
    ncurses_data*ncurses_window;
    
