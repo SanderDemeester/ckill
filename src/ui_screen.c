@@ -125,6 +125,10 @@ void *ckill_ui(void*ptr){
     if(pcontext->new_data && pcontext->number_of_menu_elements > 0){
       short index = item_index(current_item(pcontext->menu));
       /* Start making updated menu */
+      for(int i = 0; i < pcontext->number_of_menu_elements; i++)
+	pcontext->items[i] = new_item((pcontext->label_list[i])->flow_id_label,
+				      (pcontext->label_list[i])->flow_info_label);
+				      
       pcontext->menu = new_menu((ITEM**)pcontext->items);
 
       set_menu_sub(pcontext->menu,derwin(win_struct->main_window,(row-height)-4,width,3,1));
