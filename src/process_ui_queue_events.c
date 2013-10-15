@@ -11,9 +11,6 @@ int compare(const void*a,
 void *process_ui_queue_events(void*ptr){
   pthread_context*pcontext = (pthread_context*)ptr;
 
-  // Count the number of new items in each round.
-  int number_of_new_items = 0;
-
   //Control variabel for while loop.
   int c = 1; 
 
