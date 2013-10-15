@@ -25,9 +25,11 @@
 #ifndef __SCREEN_UI_H
 #include "ui_screen.h"
 #endif
+
 #define N 100
 #define NUMBER_OF_MENU_ENTRYS 1023
 #define LEN_MENU_STR 300
+#define MAX_IPV4_STRLEN 16
 
 typedef struct{
   unsigned char version_ihl; //version
@@ -101,6 +103,8 @@ typedef struct{
   int weight; // Will identify the pos of the item
   char*flow_id_label;
   char*flow_info_label;
+  char*src_ip_label;
+  char*dst_ip_label;
 }label_item;
 
 typedef struct{

@@ -133,7 +133,7 @@ void *ckill_ui(void*ptr){
 				      
       pcontext->menu = new_menu((ITEM**)pcontext->items);
 
-      set_menu_sub(pcontext->menu,derwin(win_struct->main_window,(row-height)-4,width,3,1));
+      set_menu_sub(pcontext->menu,derwin(win_struct->main_window,(row-height)-4,(width*2)-1,3,1));
       set_menu_format(pcontext->menu,(row-height)-4,1);
       set_menu_mark(pcontext->menu,"* ");
 
@@ -176,13 +176,12 @@ void print_in_middle(ncurses_data*w, int starty,int startx,int width,
   int d = c/7;
   //y,x
   mvwprintw(w->main_window,1,3,"id",NULL);
-  mvwprintw(w->main_window,1,d-2,"dest ip",NULL);
-  
-  mvwprintw(w->main_window,1,2*d,"src ip",NULL);
-  mvwprintw(w->main_window,1,3*d,"BH",NULL);
-  mvwprintw(w->main_window,1,4*d,"flow rate/s",NULL);
-  mvwprintw(w->main_window,1,5*d,"FLAGS",NULL);
-  mvwprintw(w->main_window,1,6*d,"STATE",NULL);
+  mvwprintw(w->main_window,1,d-2,"src ip",NULL);
+  mvwprintw(w->main_window,1,2*d,"dest ip",NULL);
+  mvwprintw(w->main_window,1,3*d,"flow rate/s",NULL);
+  mvwprintw(w->main_window,1,4*d,"FLAGS",NULL);
+  mvwprintw(w->main_window,1,5*d,"STATE",NULL);
+  mvwprintw(w->main_window,1,6*d,"byte send",NULL);
   wrefresh(w->main_window);
   wrefresh(w->leftbox);
   wrefresh(w->rightbox);

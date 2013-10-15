@@ -38,7 +38,7 @@ void *process_ui_queue_events(void*ptr){
      If this is true, we set this flag on true to single this information.
   */
   int found_flag = 0; 
-  
+
   /* Take pointer to khash */
   pthread_mutex_lock(pcontext->khash_mutex);
   khash_t(32)*flow_hashmap = pcontext->arg->flow_hashmap;
@@ -67,6 +67,8 @@ void *process_ui_queue_events(void*ptr){
 	  
 	  l_item->flow_id_label = (char*) malloc(sizeof(char)*100);
 	  l_item->flow_info_label = (char*) malloc(sizeof(char)*300);
+	  l_item->src_ip_label = (char*) malloc(sizeof(char)*MAX_IPV4_STRLEN);
+	  l_item->dst_ip_label = (char*) malloc(sizeof(char)*MAX_IPV4_STRLEN);
 	  
 	  // Copy our id information into our label.
 	  snprintf(
@@ -75,26 +77,45 @@ void *process_ui_queue_events(void*ptr){
 		   "%u",(uint32_t)f->flow_id
 		   );
 
-	  // Copy the rest of our string into the label.
-	  snprintf(
-		   l_item->flow_info_label,
-		   300,
-		   "%*s%d.%d.%d.%d %*s %d.%d.%d.%d|%d|size:%d%*s",
-		   ((int)pcontext->col/7)-(7+(int)10),
-		   " ",
+	  // Create source ip label string
+	  snprintf(l_item->src_ip_label,
+		   MAX_IPV4_STRLEN,
+		   "%d.%d.%d.%d",
 		   (uint32_t)(f->iph->src_adr & 0x000000FF),
 		   (uint32_t)(((f->iph->src_adr >> 8 ) & 0x000000FF)),
 		   (uint32_t)(((f->iph->src_adr >> 16) & 0x000000FF)),
-		   (uint32_t)(((f->iph->src_adr >> 24) & 0x000000FF)),
-		   10," ",
+		   (uint32_t)(((f->iph->src_adr >> 24) & 0x000000FF)));
+	  
+	  // Create dest ip label string
+	  snprintf(l_item->dst_ip_label,
+		   MAX_IPV4_STRLEN,
+		   "%d.%d.%d.%d",
 		   (uint32_t)(f->iph->dst_adr & 0x000000FF),
 		   (uint32_t)(((f->iph->dst_adr >> 8 ) & 0x000000FF)),
 		   (uint32_t)(((f->iph->dst_adr >> 16) & 0x000000FF)),
-		   (uint32_t)(((f->iph->dst_adr >> 24) & 0x000000FF)),
-		   (uint32_t)10,
+		   (uint32_t)(((f->iph->dst_adr >> 24) & 0x000000FF)));
+	  
+	  // Copy the rest of our string into the label.
+	  snprintf(l_item->flow_info_label,
+		   300,
+		   "%*s%s %*s %s %*s %s %*s %s %*s size:%d%*s",
+		   ((int)pcontext->col/7)-(6+(int)10),
+		   " ",
+		   l_item->src_ip_label,
+		   ((int)pcontext->col/7)-((int)strlen(l_item->src_ip_label)),
+		   " ",
+		   l_item->dst_ip_label,
+		   ((int)pcontext->col/7)-(3+(int)strlen(l_item->dst_ip_label)-8),
+		   " ",
+		   "nill",
+		   ((int)pcontext->col/7),
+		   " ",
+		   "nill",
+		   ((int)pcontext->col/7),
+		   " ",
 		   (int)f->size,
-		   80," "
-		   );
+		   (int)80,
+		   " ");
 
 	  for(int i = 0; i < pcontext->number_of_menu_elements; i++){
 	    // Hold the userpointer.
