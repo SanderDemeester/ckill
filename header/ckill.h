@@ -146,7 +146,7 @@ typedef struct{
    int number_of_menu_elements;
 				   
    /*List of labels*/
-   label_item**label_list = NULL;
+   label_item**label_list;
    /* a pointer to our windows */
    ncurses_data*ncurses_window;
    
